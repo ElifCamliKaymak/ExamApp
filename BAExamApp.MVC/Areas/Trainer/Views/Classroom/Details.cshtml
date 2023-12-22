@@ -1,0 +1,118 @@
+﻿@model TrainerClassroomDetailsVM
+
+@{
+    ViewData["Title"] = ViewLocalizer["Classroom_Details"];
+}
+
+<div class="card">
+    <h2 class="page-title">@ViewLocalizer["Classroom_Details"]</h2>
+    <div class="card-wrapper">
+        <div class="card-group-element">
+            <label><b>@Html.DisplayNameFor(model => model.Name) :</b></label>
+            <span>@Model.Name</span>
+        </div>
+        <div class="card-group-element">
+            <label><b>@Html.DisplayNameFor(model => model.BranchName) :</b></label>
+            <span>@Model.BranchName</span>
+        </div>
+        <div class="card-group-element">
+            <label><b>@Html.DisplayNameFor(model => model.GroupTypeName) :</b></label>
+            <span>@Model.GroupTypeName</span>
+        </div>
+        <div class="card-group-element">
+            <label><b>@Html.DisplayNameFor(model => model.OpeningDate) :</b></label>
+            <span>@Model.OpeningDate.ToShortDateString()</span>
+        </div>
+        <div class="card-group-element">
+            <label><b>@Html.DisplayNameFor(model => model.ClosedDate) :</b></label>
+            <span>@Model.ClosedDate.ToShortDateString()</span>
+        </div>
+        <div class="card-group-element">
+            <label><b>@SharedLocalizer["Student_Count"] :</b></label>
+            <span>@Model.StudentClassroomList.Count</span>
+        </div>
+        <div class="form-actions">
+            <a type="button" class="btn btn-cancel" asp-controller="Classroom" asp-action="Index">@SharedLocalizer["Back_List"]</a>
+        </div>
+
+        <div class="details-container">
+            <table class="detail-table">
+                <thead>
+                    <tr>
+                        <th class="detail-table-title" colspan="2"> @Html.DisplayNameFor(model => model.TrainerNames) </th>
+                    </tr>
+                    <tr>
+                        <th> @SharedLocalizer["Trainer_Name"] </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var trainer in Model.TrainerNames)
+                    {
+                        <tr>
+                            <td> @trainer </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+            <div class="gap"></div>
+            <table class="detail-table">
+                <thead>
+                    <tr>
+                        <th class="detail-table-title" colspan="2"> @Html.DisplayNameFor(model => model.ProductNames) </th>
+                    </tr>
+                    <tr>
+                        <th> @SharedLocalizer["Product_Name"] </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var product in Model.ProductNames)
+                    {
+                        <tr>
+                            <td> @product </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+            <div class="gap"></div>
+            <table class="detail-table">
+                <thead>
+                    <tr>
+                        <th class="detail-table-title" colspan="3"> @Html.DisplayNameFor(model => model.StudentClassroomList) </th>
+                    </tr>
+                    <tr>
+                        <th> @SharedLocalizer["Student_Name"] </th>
+                        <th> @SharedLocalizer["Transactions"] </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.StudentClassroomList.Any())
+                    {
+                        @foreach (var student in Model.StudentClassroomList)
+                        {
+                            <tr>
+                                <td>
+                                    <span> @student.StudentFullName </span>
+                                </td>
+                                <td>
+                                    <a type="button" class="btn btn-primary" asp-controller="Student" asp-action="StudentExamScoreList" asp-route-studentId="@student.StudentId">@SharedLocalizer["Show_Exam_Score"]</a>
+                                </td>
+                                <td>
+                                    <a type="button" class="btn btn-primary" asp-controller="Student" asp-action="StudentExamStatusList" asp-route-studentId="@student.StudentId">@SharedLocalizer["Missed_Exam_Excuse_Information"]</a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="2"> @SharedLocalizer["No_Data_To_List"] </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

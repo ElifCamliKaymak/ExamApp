@@ -1,0 +1,227 @@
+﻿@model IEnumerable<AdminClassroomListVM>
+
+@{
+    ViewData["Title"] = ViewLocalizer["Classroom"];
+}
+<head>
+    <link href="~/css/classroom-filter.css" rel="stylesheet" />
+</head>
+
+<section class="section dashboard">
+    <div class="row">
+        <div class="card recent-sales overflow-auto">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">@ViewLocalizer["Classroom_List"]</h5>
+                    <a class="btn btn-primary my-4 col-lg-2" style="width:185px" data-bs-toggle="modal" data-bs-target="#createClassroomModal">@SharedLocalizer["Create", SharedLocalizer["Classroom"]]</a>
+                </div>
+                <hr />
+                <div class="flex-container">
+                    <i class="fa-solid fa-circle-exclamation fa-fade fa-xl"></i>
+                    <p class="message">"@SharedLocalizer["Classroom_Filter_Warning"]"</p>
+                </div>
+                <form class="formClassroom" asp-area="Admin" asp-controller="Classroom" asp-action="GetFilteredList" method="post" onsubmit="return onSubmitForm()">
+
+                    <div>
+                        <label>@SharedLocalizer["Classroom_Name"]</label>
+                        <select id="name" name="name" asp-items="@(ViewBag.ClassList)">
+                            <option value="">@SharedLocalizer["Choose"]</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>@SharedLocalizer["Branch_Name"]</label>
+                        <select id="branchName" name="branchName" asp-items="@(ViewBag.BranchList)">
+                            <option value="">@SharedLocalizer["Choose"]</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>@SharedLocalizer["Group_Type"]</label>
+                        <select id="groupType" name="groupType" asp-items="@(ViewBag.GroupTypeList)">
+                            <option value="">@SharedLocalizer["Choose"]</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>@SharedLocalizer["Opening_Date"]</label>
+                        <input type="date" id="openingDate" name="openingDate" class="form-control" />
+                    </div>
+
+                    <div>
+                        <label>@SharedLocalizer["Closed_Date"]</label>
+                        <input type="date" id="closedDate" name="closedDate" class="form-control" />
+                    </div>
+
+                    <div>
+                        <label class="form-check-label" id="form-check-label" for="showInactiveCheckbox">
+                            @ViewLocalizer["Classroom_Show_All"]
+                        </label>
+                        <input class="form-check-input" type="checkbox" id="showInactiveCheckbox" onchange="toggleInputs()">
+                    </div>
+                    <button type="submit" id="searchButton">@SharedLocalizer["Search"]</button>
+                </form>
+                <hr />
+                @if (ViewBag.ShowAllData == false)
+                {
+
+                }
+                else
+                {
+                    <table class="table table-row-bordered datatable">
+
+                        <thead>
+                            <tr class="text-center">
+                                <th class="text-center fw-bold text-white" style="background-color:rgb(134,138,155)">@Html.DisplayNameFor(model => model.Name)</th>
+                                <th class="text-center fw-bold text-white " style="background-color: rgb(134,138,155)">@Html.DisplayNameFor(model => model.OpeningDate)</th>
+                                <th class="text-center fw-bold text-white" style="background-color: rgb(134,138,155)">@Html.DisplayNameFor(model => model.ClosedDate)</th>
+                                <th class="text-center fw-bold text-white" style="background-color: rgb(134,138,155)">@Html.DisplayNameFor(model => model.BranchName)</th>
+                                <th class="text-center fw-bold text-white" style="background-color: rgb(134,138,155)">@ViewLocalizer["Classroom_Operations"]</th>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                if (!string.IsNullOrEmpty(item.Name))
+                                {
+                                    <tr>
+
+                                        <td class="categories text-center">
+                                            <a title="Eğitmenler: @item.TrainerNames">
+                                                <span class="post_category">@item.Name</span>
+                                            </a>
+                                        </td>
+                                        <td class="categories text-center">
+                                            <a>
+                                                <span class="post_category">@item.OpeningDate.ToShortDateString()</span>
+                                            </a>
+                                        </td>
+                                        <td class="categories text-center">
+                                            <a>
+                                                <span class="post_category">@item.ClosedDate.ToShortDateString()</span>
+                                            </a>
+                                        </td>
+                                        <td class="categories text-center">
+                                            <a>
+                                                <span class="post_category">@item.BranchName</span>
+                                            </a>
+                                        </td>
+                                        <td class="employment text-center">
+                                            <div class="dropdown">
+                                                <button id="optionsButton1">@SharedLocalizer["Options"] <i class="fa-solid fa-chevron-down"></i></button>
+
+                                                @if (!item.IsActive)
+                                                {
+                                                    <div class="dropdown-content">
+                                                        <a asp-action="Details" asp-route-id="@item.Id">@SharedLocalizer["Details"]</a>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="dropdown-content">
+                                                        <a asp-action="Details" asp-route-id="@item.Id">@SharedLocalizer["Details"]</a>
+                                                        <a asp-action="Update" asp-route-id="@item.Id">@SharedLocalizer["Edit"]</a>
+                                                        <a asp-action="AddStudent" asp-route-id="@item.Id">@ViewLocalizer["Add_Student"]</a>
+                                                        <a asp-action="AddTrainer" asp-route-id="@item.Id">@ViewLocalizer["Eğitmen Ekle"]</a>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                }
+
+            </div>
+        </div>
+    </div>
+</section>
+<partial name="~/Areas/Admin/Views/Classroom/CreatePartialView.cshtml" model="new AdminClassroomCreateVM()"></partial>
+<script src="~/lib/student/js/simple-datatables.js"></script>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="~/dataTable/~/js/main.js"></script>
+    <script src="~/js/select2.js"></script>
+
+
+    <script>
+        var classroomCount = @Model.Count();
+        window.onload = function () {
+            paginationSetupDropdown(classroomCount);
+        }
+        $(document).ready(function () {
+            $('#name,#branchName,#groupType').select2().on('change', function () {
+                var selectedValue = $(this).val();
+                if (selectedValue === "") {
+                    $(this).siblings('select').children('option[value=""]').show();
+                } else {
+                    $(this).siblings('select').children('option[value=""]').hide();
+                }
+            });
+            $('#showInactiveCheckbox').change(function () {
+                var isChecked = $(this).prop('checked');
+                var inputsToClear = ['name', 'branchName', 'groupType', 'openingDate', 'closedDate'];
+
+                $('#name, #branchName, #groupType, #openingDate, #closedDate').prop('disabled', isChecked);
+
+                if (isChecked) {
+                    $('#name, #branchName, #groupType').val('').trigger('change');
+                    $('#openingDate, #closedDate').val('');
+                }
+            });
+        });
+        function toggleData(checked) {
+            if (checked) {
+                window.location.href = "@Url.Action("Index", new { showAllData = true })";
+            }
+            else {
+                window.location.href = "@Url.Action("Index")";
+            }
+        }
+        function onSubmitForm() {
+            var checkbox = document.getElementById("showInactiveCheckbox");
+            var searchButton = document.getElementById("searchButton");
+
+            if (checkbox.checked) {
+                window.location.href = "@Url.Action("Index", new { showAllData = true })";
+                return false;
+            }
+            return true;
+        }
+
+        document.getElementById("searchButton").addEventListener("click", function () {
+            var checkbox = document.getElementById("showInactiveCheckbox");
+
+            if (checkbox.checked) {
+
+                window.location.href = "@Url.Action("Index", new { showAllData = true })";
+                return false;
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            var divElements = document.querySelectorAll('div');
+
+            divElements.forEach(function (divElement) {
+                var selectElement = divElement.querySelector('select');
+
+                if (selectElement) {
+                    sortSelectOptionsAlphabetically(selectElement);
+                }
+            });
+
+            function sortSelectOptionsAlphabetically(selectElement) {
+
+                var options = Array.from(selectElement.options);
+
+                options.sort(function (a, b) {
+                    return a.text.localeCompare(b.text);
+                });
+
+                options.forEach(function (option) {
+                    selectElement.add(option);
+                });
+            }
+        });
+
+    </script>
+}

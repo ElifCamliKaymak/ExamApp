@@ -1,0 +1,64 @@
+﻿@model IEnumerable<TrainerClassroomListVM>
+
+@{
+    ViewData["Title"] = SharedLocalizer["List", SharedLocalizer["Classroom"]];
+}
+
+<div class="table-container">
+    <h2 class="page-title">@SharedLocalizer["Classroom_List"]</h2>
+    <table class="datatable">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(x => x.Name)</th>
+                <th>@Html.DisplayNameFor(model => model.OpeningDate)</th>
+                <th>@Html.DisplayNameFor(model => model.ClosedDate)</th>
+                <th>@Html.DisplayNameFor(model => model.StudentCount)</th>
+                <th>@SharedLocalizer["Transactions"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Any())
+            {
+                @foreach (var classroom in Model)
+                {
+                    <tr>
+                        <td>
+                            <a @* title="Eğitmenler: @classroom.TrainerNames" *@>
+                                <span>@classroom.Name</span>
+                            </a>
+                        </td>
+                        <td>
+                            <span>@classroom.OpeningDate.ToShortDateString()</span>
+                        </td>
+                        <td>
+                            <span>@classroom.ClosedDate.ToShortDateString()</span>
+                        </td>
+                        <td class="categories text-center">
+                            <span>@classroom.StudentCount</span>
+                        </td>
+                        <td>
+                            <div class="optionsdropdown">
+                                <button class="btn-details" onclick="toggleDropdown('optionsdropdownMenu-@classroom.Id')">@SharedLocalizer["Options"] <i class="fa-solid fa-caret-down"></i></button>
+                                <div class="options-dropdown-menu" id="optionsdropdownMenu-@classroom.Id">
+                                    <a asp-action="Details" asp-route-id="@classroom.Id">@SharedLocalizer["Details"]</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5">
+                        @SharedLocalizer["No_Data_To_List"]
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+

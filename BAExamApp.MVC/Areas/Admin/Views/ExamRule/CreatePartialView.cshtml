@@ -1,0 +1,133 @@
+﻿@model AdminExamRuleCreateVM
+
+@{
+    ViewData["Title"] = ViewLocalizer["Create_New"];
+}
+
+<div class="modal fade" id="createExamRuleModal" tabindex="-1" aria-labelledby="ExamRuleAdd" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@SharedLocalizer["Exam_Rule"]</h5>
+                <button type="button" class="btn btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-controller="ExamRule" asp-action="Create" class="form" id="create-exam-rule" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row mb-3">
+                                <label asp-for="Name" class="col-sm-4 col-form-label col-form-label-lg"></label>
+                                <div class="col-sm-8">
+                                    <input asp-for="Name" type="text" class="form-control form-control-lg form-control-solid" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label asp-for="ProductId" class="col-sm-4 col-form-label col-form-label-lg">@SharedLocalizer["Product"]</label>
+                                <div class="col-sm-8">
+                                    <select asp-for="ProductId" asp-items="@ViewBag.ProductList" class="form-select" onchange="onProductChange()">
+                                        <option value="" disabled selected>@SharedLocalizer["Choose"]</option>
+                                    </select>
+                                    <span asp-validation-for="ProductId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-4 col-form-label col-form-label-lg" for="SubjectId">@SharedLocalizer["Subject"]</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select" id="SubjectId" onchange="onSubjectChange()">
+                                        <option value="" disabled selected>@SharedLocalizer["Choose"]</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-4 col-form-label col-form-label-lg" for="SubtopicId">@SharedLocalizer["Subtopic"]</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select" id="SubtopicId">
+                                        <option value="" disabled selected>@SharedLocalizer["Choose"]</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-4 col-form-label col-form-label-lg" for="ExamType">@SharedLocalizer["Exam_Type"]</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select" id="ExamType" asp-items="@ViewBag.ExamTypes" onchange="onExamTypeChange()">
+                                        <option value="" disabled selected>@SharedLocalizer["Choose"]</option>
+                                        @* @foreach (SelectListItem examType in ViewBag.ExamTypes)
+                                        {
+                                        <option value="@examType.Value">@SharedLocalizer[$"{examType.Text}"]</option>
+                                        } *@
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <input class="form-control" name="examRuleSubjects" id="examRuleSubjects" hidden />
+                        <div class="col-md-6">
+                            <div class="row mb-3">
+                                <label class="col-sm-4 col-form-label col-form-label-lg" for="QuestionCount">@SharedLocalizer["Question_Count"]</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-lg form-control-solid" type="number" id="QuestionCount" />
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-4 col-form-label col-form-label-lg" for="QuestionType">@SharedLocalizer["Question_Type"]</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select" id="QuestionType">
+                                        <option value="" disabled selected>@SharedLocalizer["Choose"]</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <label class="col-sm-4 col-form-label col-form-label-lg" for="QuestionDifficultyId">@SharedLocalizer["Question_Difficulty"]</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select" id="QuestionDifficultyId">
+                                        <option value="" disabled selected>@SharedLocalizer["Choose"]</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <label asp-for="Description" class="col-sm-4 col-form-label col-form-label-lg"></label>
+                                <div class="col-sm-8">
+                                    <textarea asp-for="Description" type="text" class="form-control form-control-lg form-control-solid" style="resize:none;" rows="4"></textarea>
+                                    <span asp-validation-for="Description" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-end mb-3">
+                                <button class="btn btn-sm btn-primary col-4" type="button" onclick="addNewRule()">@SharedLocalizer["Add_New_Rule"]</button>
+                            </div>
+                        </div>
+                        <span class="text-danger" id="inputValidation" hidden>@SharedLocalizer["Fill_All_Inputs"]</span>
+                        <span class="text-danger" id="sameRuleValidation" hidden>@SharedLocalizer["Same_Rule_Exists"]</span>
+                    </div>
+                    <div class="row mb-3">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="col-sm-2">@SharedLocalizer["Subject"]</th>
+                                    <th class="col-sm-2">@SharedLocalizer["Subtopic"]</th>
+                                    <th class="col-sm-2">@SharedLocalizer["Exam_Type"]</th>
+                                    <th class="col-sm-2">@SharedLocalizer["Question_Type"]</th>
+                                    <th class="col-sm-2">@SharedLocalizer["Question_Difficulty"]</th>
+                                    <th class="col-sm-2">@SharedLocalizer["Question_Count"]</th>
+                                    <th class="col-sm-2">@SharedLocalizer["Actions"]</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableContent">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" type="submit">@SharedLocalizer["Save"]</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/exam-rule-create.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+<script src="~/js/jquery.min.js"></script>
+<script src="~/js/select2.js"></script>

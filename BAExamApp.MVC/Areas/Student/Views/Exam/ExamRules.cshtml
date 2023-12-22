@@ -1,0 +1,118 @@
+﻿@{
+    ViewData["Title"] = "Sınav Kuralları";
+    Layout = "";
+
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>@ViewData["Title"]</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link href="~/css/examrules.css" rel="stylesheet" />
+</head>
+<body>
+    <main>
+        <div class="container rule-1 p-2">
+            <div class="row">
+                <div class="col-12">
+                    <div class="image-container">
+                        <img src="~/images/examrules/examrule_1.png" />
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container rule-2 p-2">
+            <div class="row">
+                <div class="col-12">
+                    <div class="image-container d-flex justify-content-end">
+                        <img src="~/images/examrules/examrule_2.png" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container rule-3 p-2">
+            <div class="row">
+                <div class="col-12">
+                    <div class="image-container d-flex justify-content-end">
+                        <img src="~/images/examrules/examrule_3.png" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container rule-4 p-2">
+            <div class="row">
+                <div class="col-12" style="margin-top:200px;">
+                    <div class="image-container">
+                        <img src="~/images/examrules/examrule_4.png" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="container rule-5 p-2">
+            <div class="row">
+                <div class="col-12" style="margin-top:200px;">
+                    <ol><h4 class="examRulesDescription">Diğer Kurallar</h4>
+                        <li>Her sayfada bir soru ve o soruya ait cevap şıkları bulunmaktadır. </li>
+                        <li>Sıradaki soruya geçtikten sonra önceki sorulara dönülemeyecektir ve verilen cevaplar değiştirilemeyecektir.</li>
+                        <li>Sınav esnasında geri butonunu kullanarak önceki soruya dönemezsiniz. Sayfayı yenileme(F5) yapsanız bile kaldığınız sorudan devam edecek ve süreniz işlemeye devam edecektir.</li>
+                        <li>Web tarayıcınızda kullanılan kısayol tuşlarını sınav süresince kullanmayınız.</li>
+                        <li>
+                            <ul>Sınav güvenliği kapsamında online sınavlarda uyulması gereken yasaklar aşağıda verilmiştir. Bu yasakları ihlal ettiği belirlenen öğrencinin sınavı geçersiz sayılır ve haklarında öğrenci disiplin yönetmeliği uyarınca soruşturma açılır:
+                                <li>Sınav sorularını ve/veya cevaplarını kopyalamak, dağıtmak, paylaşmak, çoğaltmak, ya da yayınlamak.</li>
+                                <li>Sınava kendisi yerine bir başkasının girmesini sağlamak.</li>
+                                <li>Web tarayıcısının özelliklerini sınav güvenliğini tehlikeye düşürecek şekilde değiştirmek.</li>
+                                <li>Sınav verilerini değiştirmek için teşebbüste bulunmak.</li>
+                            </ul>
+                        </li>
+                        <li>Sınav işleminin mutlaka öğrenci tarafından bitirilmesi gerekmektedir. Bu amaçla sınav sonunda mutlaka “Sınavı Bitir” butonuna basarak sınavınızı tamamlayınız.</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        <div class="row p-2">
+            <div class="col p-2 button-div">
+                <button class="btn btn-primary" id="nextRuleBtn">@SharedLocalizer["Next_Rule"]</button>
+            </div>
+        </div>
+    </main>
+    <script>
+        let currentRule = 1;
+
+        // Initially show the 'Next Rule' button
+        document.getElementById('nextRuleBtn').style.display = 'block';
+
+        document.getElementById('nextRuleBtn').addEventListener('click', function () {
+            currentRule++;
+
+            // Hide all rules
+            document.querySelectorAll('.container').forEach(function (rule) {
+                rule.style.display = 'none';
+            });
+
+            // Show the current rule
+            document.querySelector('.container.rule-' + currentRule).style.display = 'block';
+
+            // Update button text and functionality
+            if (currentRule < 5) {
+                this.innerText = 'Sıradaki Kural';
+            } else {
+                this.innerText = 'Sınavı Başlat';
+                this.removeEventListener('click', arguments.callee);
+                this.addEventListener('click', function () {
+                    window.location.href = '@Url.Action("StartExam", "Exam")';
+                });
+            }
+        });
+    </script>
+</body>
+</html>

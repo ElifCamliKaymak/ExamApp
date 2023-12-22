@@ -1,0 +1,70 @@
+﻿@model IEnumerable<StudentExamsForAdminVM>
+
+
+@{
+    ViewData["Title"] = SharedLocalizer["Exams"];
+
+    var latestClassroom = Model.Select(x => x.LatestClassroom).FirstOrDefault();
+    var latestTrainers = Model.Select(x => x.LatestClassroomsTrainers).FirstOrDefault();
+}
+
+<h5>  <b>@SharedLocalizer["Name"]: @Model.FirstOrDefault().StudentFullName</b>  </h5>
+<h5>  <b>@SharedLocalizer["Classroom"]:</b> @latestClassroom</h5>
+<h5>  <b>@SharedLocalizer["Trainers"]:</b> @latestTrainers</h5>
+
+<section class="section dashboard">
+    <div class="row">
+        <div class="card recent-sales overflow-auto">
+            <div class="card-body">
+                <div class=" d-flex justify-content-between">
+                    <h5 class="card-title">@SharedLocalizer["List", SharedLocalizer["Exams"]]</h5>
+                </div>
+                <table class="table table-row-bordered datatable">
+                    <thead>
+                        <tr class="text-center">
+                            <th class="text-center fw-bold text-white" style="background-color:rgb(134,138,155)">@SharedLocalizer["Name_Of_The_Exam"]</th>
+                            <th class="text-center fw-bold text-white" style="background-color:rgb(134,138,155)">@SharedLocalizer["Exam_Score"] / @SharedLocalizer["Max_Score"]</th>
+                            <th class="text-center fw-bold text-white" style="background-color: rgb(134,138,155)">@SharedLocalizer["Classroom"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var studentExams in Model)
+                        {
+                            <tr>
+                                <td class="categories text-center">
+                                    <a>
+                                        <span class="post_category">@studentExams.ExamName</span>
+                                    </a>
+                                </td>
+                                <td class="categories text-center">
+                                    <a>
+                                        @if (studentExams.Score == null)
+                                        {
+                                            <span class="post_category text-danger"><b>@SharedLocalizer["Did_Not_Take_The_Exam"]</b></span>
+                                        }
+                                        else
+                                        {
+                                            <span class="post_category">@studentExams.Score / @studentExams.MaxScore</span>
+                                        }
+                                    </a>
+                                </td>
+                                <td class="categories text-center">
+                                    <a>
+                                        <span class="post_category">@studentExams.ClassroomName</span>
+                                    </a>
+                                </td>
+
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+
+
+
+            </div>
+        </div>
+    </div>
+
+</section>
+<script src="~/lib/student/js/simple-datatables.js"></script>

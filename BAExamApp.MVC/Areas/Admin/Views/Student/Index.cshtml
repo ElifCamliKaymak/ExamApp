@@ -1,0 +1,168 @@
+﻿@model List<AdminStudentListVM>
+
+@{
+    ViewData["Title"] = ViewLocalizer["Students"];
+}
+
+<section class="section dashboard">
+    <div class="row">
+        <div class="card recent-sales overflow-auto">
+            <div class="card-body">
+                <div class=" d-flex justify-content-between">
+                    <h5 class="card-title">@SharedLocalizer["List", SharedLocalizer["Student"]]</h5>
+                    <a class="btn btn-primary my-4 col-lg-2" style="width:185px" data-bs-toggle="modal" data-bs-target="#createStudentModal">@SharedLocalizer["Create", SharedLocalizer["Student"]]</a>
+                </div>
+
+                <link href="~/css/filter-student.css" rel="stylesheet" />
+                <hr />
+                <div class="div-student">
+                    <i class="fa-solid fa-circle-exclamation fa-fade fa-xl"></i>
+                    <p class="student-p">@SharedLocalizer["Student_Filter_Warning"]</p>
+                </div>
+                <form class="form-student" asp-controller="Student" asp-action="GetStudents" method="post">
+                    <div>
+                        <label class="student-label" for="FirstName">@SharedLocalizer["Student_Name"]:</label>
+                        <input type="text" id="FirstName" name="FirstName" />
+                    </div>
+                    <div>
+                        <label class="student-label" for="LastName">@SharedLocalizer["Student_Surname"]:</label>
+                        <input type="text" id="LastName" name="LastName" />
+                    </div>
+                    <div>
+                        <label class="student-label" for="Email">@SharedLocalizer["Student_Mail_Adress"]:</label>
+                        <input type="text" id="Email" name="Email" />
+                    </div>
+                    <div>
+                        <label class="student-checkbox-label" for="ActiveStudents">@SharedLocalizer["List_All_Students"]</label>
+                        <input type="checkbox" id="ActiveStudents" name="ActiveStudents" />
+                    </div>
+                    <div>
+                        <button class="student-button" type="submit">@SharedLocalizer["Get_Student"]</button>
+                    </div>
+                </form>
+                <br />
+                <hr />
+                <br />
+
+                @if (ViewBag.ShowAllActiveStudents == false)
+                {
+                }
+                else
+                {
+                    <table class="table table-row-bordered datatable">
+                        <thead>
+                            <tr class="text-center">
+                                <th class="text-center fw-bold text-white" style="background-color:rgb(134,138,155)">@ViewLocalizer["Profile_Picture"]</th>
+                                <th class="text-center fw-bold text-white" style="background-color:rgb(134,138,155)">@ViewLocalizer["Student_Name"]</th>
+                                <th class="text-center fw-bold text-white " style="background-color: rgb(134,138,155)">@ViewLocalizer["Student_Surname"]</th>
+                                <th class="text-center fw-bold text-white" style="background-color: rgb(134,138,155)">@ViewLocalizer["Student_Mail_Adress"]</th>
+                                <th class="text-center fw-bold text-white" style="background-color: rgb(134,138,155)">@ViewLocalizer["Student_Operations"]</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var student in Model)
+                            {
+                                if (!string.IsNullOrEmpty(student.FirstName))
+                                {
+                                    <tr>
+                                        @if (student.Image != null)
+                                        {
+                                            <td class="categories text-center"><img style="width: 100px;border-radius: 50%;height: 100px;" src="@(string.Format("data:image/jpeg;base64,{0}", student.Image))" /></td>
+                                        }
+                                        else
+                                        {
+                                            <td class="categories text-center"><img style="width: 100px;border-radius: 50%;height: 100px;" src="~/images/blank-profile-picture.png" /></td>
+                                        }
+
+                                        <td class="categories text-center">
+                                            <a>
+                                                <span class="post_category">@student.FirstName</span>
+                                            </a>
+                                        </td>
+                                        <td class="categories text-center">
+                                            <a>
+                                                <span class="post_category">@student.LastName</span>
+                                            </a>
+                                        </td>
+                                        <td class="categories text-center">
+                                            <a>
+                                                <span class="post_category">@student.Email</span>
+                                            </a>
+                                        </td>
+                                        <td class="employment text-center">
+                                            <div class="dropdown">
+                                                <button id="optionsButton1">@SharedLocalizer["Options"] <i class="fa-solid fa-chevron-down"></i></button>
+                                                <div class="dropdown-content">
+                                                    <a asp-action="Details" asp-route-id="@student.Id">@SharedLocalizer["Details"]</a>
+                                                    <a asp-action="Update" asp-route-id="@student.Id">@SharedLocalizer["Edit"]</a>
+                                                    <a asp-action="StudentExams" asp-route-id="@student.Id">@SharedLocalizer["Exams"]</a>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                }
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<partial name="~/Areas/Admin/Views/Student/Create.cshtml" model="new AdminStudentCreateVM()"></partial>
+<script src="~/dataTable/assets/js/main.js"></script>
+<script src="~/dataTable/~/js/main.js"></script>
+<script src="~/lib/student/js/simple-datatables.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var form = document.querySelector('.form-student');
+        var checkbox = document.getElementById('ActiveStudents');
+        var firstNameInput = document.getElementById('FirstName');
+        var lastNameInput = document.getElementById('LastName');
+        var emailInput = document.getElementById('Email');
+
+        function clearInput(inputElement) {
+            inputElement.value = '';
+        }
+
+        function onSubmit(event) {
+            event.preventDefault();
+            window.location.href = "@Url.Action("Index", new { showAllActiveStudents = true })";
+        }
+
+        checkbox.addEventListener('change', function () {
+            var isChecked = checkbox.checked;
+
+            firstNameInput.disabled = isChecked;
+            lastNameInput.disabled = isChecked;
+            emailInput.disabled = isChecked;
+
+            form.classList.toggle('disabled', isChecked);
+
+            if (isChecked) {
+                clearInput(firstNameInput);
+                clearInput(lastNameInput);
+                clearInput(emailInput);
+
+                form.addEventListener('submit', onSubmit);
+            } else {
+                form.removeEventListener('submit', onSubmit);
+            }
+        });
+
+        form.addEventListener('submit', function (event) {
+            if (checkbox.checked) {
+                event.preventDefault();
+                window.location.href = "@Url.Action("Index", new { showAllActiveStudents = true })";
+            }
+        });
+    });
+
+    var classroomCount = @Model.Count();
+    window.onload = function () {
+        paginationSetupDropdown(classroomCount);
+    }
+</script>

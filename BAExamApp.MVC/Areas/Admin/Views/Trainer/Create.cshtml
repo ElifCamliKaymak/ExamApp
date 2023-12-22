@@ -1,0 +1,279 @@
+﻿@model AdminTrainerCreateVM
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="modal fade bd-example-modal-lg" id="trainerCreate" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h3 class="card-title text-center fw-bolder" style="font-size:30px">@ViewLocalizer["Create_New"]</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form asp-action="Create" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="mb-7">
+                                    <label class="mb-3" style="font-size: 20px; font-weight: bold;"><span>@SharedLocalizer["Choose_Picture"]</span></label>
+                                    <div class="mt-1">
+                                        <div class="image-input image-input-outline" data-kt-image-input="true" style="position: relative;">
+                                            <div style="display: flex; justify-content: flex-start;">
+                                                <a class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" title="@SharedLocalizer["Upload_Profile_Picture"]" id="addPreview" style="position: absolute; top: 5px; left: 5px;">
+                                                    <i class="bi bi-pencil-fill fs-7"></i>
+                                                </a>
+                                                <a class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" id="removePreview" title="@SharedLocalizer["Remove_Profile_Picture"]" style="position: absolute; top: 5px; left: 95px;">
+                                                    <i class="bi bi-x fs-2"></i>
+                                                </a>
+                                                <img id="previewImage" class="w-125px h-125px" style="display: none;" alt="Preview" />
+                                                <img id="defaultImage" class="w-125px h-125px" src="~/images/blank-profile-picture.png" alt="Profile" />
+                                                <input type="file" asp-for="NewImage" id="fileInput" accept=".jpg,.jpeg,.png" style="visibility: hidden;" />
+
+                                            </div>
+                                            <span asp-validation-for="NewImage.Length" class="text-danger"></span>
+                                            <span asp-validation-for="NewImage.ContentType" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group mt-4">
+                                    <label asp-for="FirstName" class="control-label" style="font-size: 20px; font-weight: bold;"></label>
+                                    <input asp-for="FirstName" class="form-control bg-white border" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group mt-4">
+                                    <label asp-for="LastName" class="control-label" style="font-size: 20px; font-weight: bold;"></label>
+                                    <input asp-for="LastName" class="form-control bg-white border" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group mt-4">
+                                    <label asp-for="Email" class="control-label" style="font-size: 20px; font-weight: bold;"></label>
+                                    <input type="email" asp-for="Email" class="form-control bg-white border" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+
+                                <div id="otherEmails"></div>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <div class="btn">
+                                        <button class="w3-green w3-button w3-round fw-bold" type="button" onclick="addOtherEmail()">@ViewLocalizer["Add_Other_Email"]</button>
+                                        <div class="fv-plugins-message-container invalid-feedback"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check form-check-inline">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" value="false" asp-for="Gender" checked>
+                                        <label class="form-check-label" asp-for="Gender">
+                                            @SharedLocalizer["Woman"]
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" asp-for="Gender" value="true">
+                                        <label class="form-check-label" asp-for="Gender">
+                                            @SharedLocalizer["Man"]
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group mt-4">
+                                    <label asp-for="DateOfBirth" class="control-label" style="font-size: 20px; font-weight: bold;"></label>
+                                    <input type="date" asp-for="DateOfBirth" asp-format="{0:dd/MM/yyyy}" class="form-control" />
+                                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                                </div>
+                                <div class="form-group mt-4">
+                                    <label asp-for="CityId" class="control-label" style="font-size: 20px; font-weight: bold;"></label>
+                                    <select class="form-control" asp-items="ViewBag.Cities" asp-for="CityId">
+                                        <option value="">@SharedLocalizer["Choose"]</option>
+                                    </select>
+                                    <span asp-validation-for="CityId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <label asp-for="TalentIds" class="control-label mt-3"></label>
+                                    <select class="form-control multi-select js-example-placeholder-multiple js-states" style="width: 100%" asp-items="@ViewBag.Talents" asp-for="TalentIds">
+                                        <option></option>
+                                    </select>
+                                    <span asp-validation-for="TalentIds" class="text-danger"></span>
+                                </div>
+                                <div class="talent-component-container mt-2"></div>
+                                <a class="cursor-pointer w3-green w3-button w3-round form-control" onclick="AddTalents()">Yetenek ekle</a>
+                                <div class="form-group mt-2">
+                                    <label asp-for="TechnicalUnitId" class="control-label" style="font-size: 20px; font-weight: bold;"></label>
+                                    <select class="form-control" asp-items="ViewBag.TecnicalUnit" asp-for="TechnicalUnitId" onchange="getProducts()">
+                                        <option value="">@SharedLocalizer["Choose"]</option>
+                                    </select>
+                                    <span asp-validation-for="TechnicalUnitId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group mt-2 product-component-container"></div>
+                            </div>
+                        </div>
+                        <div class="modal-footer mt-2">
+                            <a class="w3-blue w3-button w3-round fw-bold mx-2" asp-action="Index">@SharedLocalizer["Back_List"]</a>
+                            <button type="submit" class="w3-green w3-button w3-round fw-bold mx-2">@SharedLocalizer["Save"]</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+<script src="~/js/jquery.min.js"></script>
+<script src="~/js/select2.js"></script>
+
+<div class="modal fade" id="talent-add-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Yetenek Ekle</h5>
+                <button type="button" class="w3-red w3-button w3-round fw-bold close" data-bs-dismiss="modal" aria-label="@SharedLocalizer["Close"]">x</button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid" id="talent-add">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveButton" type="button" class="w3-green w3-button w3-round fw-bold" onclick="loadTalentList()">@SharedLocalizer["Save"]</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#talent-add-modal').appendTo("body")
+
+    function AddTalents() {
+        const myModal = new bootstrap.Modal('#talent-add-modal');
+        let spinner = `<div class="spinner-border text-primary" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                      </div>`
+        $('#talent-add').html(spinner)
+        myModal.show()
+
+        $.ajax({
+            url: "@Url.Action("AddTalent")",
+            method: "get",
+            success: function (response) {
+                $('#talent-add').html(response);
+            },
+            error: function () {
+                myModal.hide()
+                Swal.fire(
+                    'Hata !',
+                    'Yetenek ekleme sayfasına ulaşılamadı. Lütfen sistem yöneticinize başvurun. (Error 404)',
+                    'error'
+                )
+            }
+        })
+
+    }
+    function loadTalentList() {
+
+        const names = document.getElementById('Name').value;
+        console.log(names);
+        $.ajax({
+            url: "@Url.Action("AddTalent")",
+            method: "post",
+            data: "name=" + names,
+            success: function (response) {
+                $('#talent-add-modal .close').click();
+            },
+            error: function () {
+
+                Swal.fire(
+                    'Hata !',
+                    'Yetenek ekleme sayfasına ulaşılamadı. Lütfen sistem yöneticinize başvurun. (Error 404)',
+                    'error'
+                )
+            }
+        })
+
+    }
+    
+
+</script>
+
+
+
+@section Scripts{
+    <script>
+        var validationMessage = "@SharedLocalizer["Picture_Format_Error"]";
+    </script>
+    <script type="text/javascript">
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+        var dateTimeInput
+        dateTimeInput = document.getElementById("dateTimeInput");
+        dateTimeInput.value = Date.now;
+    </script>
+    @*pllbox select2 çalışmasını sağlar*@
+    <script>
+        $(document).ready(function () {
+            $('.pillbox-select2').select2({
+                placeholder: "--- Seçiniz ---",
+                allowClear: true,
+                closeOnSelect: false,
+                templateResult: function (state) {
+                    if (!state.id) { return state.text; }
+                    return $("<div><input type='checkbox' id='checkbox-" + state.id + "' class='form-check-input' " + (state.selected ? "checked" : "") + "> <label for='checkbox-" + state.id + "'>" + state.text + "</label></div>")
+                        .click(function (e) {
+                            if ($(e.target).is("input")) {
+                                $('.pillbox-select2').trigger('change');
+                            }
+                        });
+                },
+                templateSelection: function (state) {
+                    if (!state.id) { return state.text; }
+                    return $("<div style='padding-left: 22px'>" + state.text + "</div>");
+
+                },
+            });
+        });
+    </script>
+
+}
+
+<script>
+    function addOtherEmail() {
+
+        //Create otherMails html
+        let template = `<div class="fv-row mb-7 fv-plugins-icon-container w-85">
+                    <div class="d-flex align-items-center">
+                <label class="form-label mt-3" style="font-size: 20px; font-weight: bold;">Mail Adresi</label>
+                </div>
+                <div class="d-flex">
+                <div class="fv-plugins-message-container invalid-feedback d-flex me-2">
+                <input type="email" class="form-control form-control-solid bg-white border" name="otherEmails">
+                <span class="text-danger"></span>
+                </div>
+                <div class="align-self-end d-flex flex-row-reverse justify-content-end">
+                <a class="btn btn-danger btn-sm" onclick="removeMail(this)"><span class="h5 text-light">X</span></a>
+                </div>
+                </div>
+                </div>`;
+
+        //Append created otherMails
+        $("#otherEmails").append(template);
+
+    }
+</script>
+
+<script>
+    function removeMail(prop) {
+        //Removing otherEmail
+        $(prop).parent().parent().parent().remove();
+    }
+</script>
+
+<script>
+    $('.js-example-placeholder-multiple').select2({
+        dropdownParent: $('#trainerCreate'),
+        placeholder: "Select a talent"
+    });
+</script>
+

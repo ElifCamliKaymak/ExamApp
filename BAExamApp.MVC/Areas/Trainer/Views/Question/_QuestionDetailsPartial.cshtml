@@ -1,0 +1,83 @@
+﻿@model TrainerQuestionDetailsVM
+
+<div class="card-wrapper">
+    <a asp-controller="Question" asp-action="CopyQuestion" asp-route-id="@Model.Id" class="btn btn-success">@SharedLocalizer["Copy_Question"]</a>
+    <div class="card-group-element">
+        <label>@Html.DisplayNameFor(model => model.CreatedDate) :</label>
+        <span>@Model.CreatedDate.ToShortDateString()</span>
+    </div>
+    <div class="card-group-element">
+        <label>@Html.DisplayNameFor(model => model.SubjectName) :</label>
+        <span>@Html.DisplayFor(model => model.SubjectName)</span>
+    </div>
+    <div class="card-group-element">
+        <label>@Html.DisplayNameFor(model => model.SubtopicName) :</label>
+        <span>@Html.DisplayFor(model => model.SubtopicName)</span>
+    </div>
+    <div class="card-group-element">
+        <label>@Html.DisplayNameFor(model => model.QuestionType) :</label>
+        <span>@Html.DisplayFor(model => model.QuestionType)</span>
+    </div>
+    <div class="card-group-element">
+        <label>@Html.DisplayNameFor(model => model.QuestionDifficultyName) :</label>
+        <span>@Html.DisplayFor(model => model.QuestionDifficultyName)</span>
+    </div>
+    <div class="card-group-element">
+        <label>@Html.DisplayNameFor(model => model.TimeGiven) :</label>
+        <span>@Html.DisplayFor(model => model.TimeGiven)</span>
+    </div>
+    <div class="card-group-element">
+        <label>@Html.DisplayNameFor(model => model.Target) :</label>
+        <span>@Html.DisplayFor(model => model.Target)</span>
+    </div>
+    <div class="card-group-element">
+        <label>@Html.DisplayNameFor(model => model.Gains) :</label>
+        <span>@Html.DisplayFor(model => model.Gains)</span>
+    </div>
+    <div class="card-group-element">
+        <label>@Html.DisplayNameFor(model => model.Content) :</label>
+        <span>@Model.Content</span>
+    </div>
+    <div class="card-group-element">
+        <label>@Html.DisplayNameFor(model => model.QuestionAnswers) :</label>
+        @if (Model.QuestionType == QuestionType.TrueFalse)
+        {
+            @foreach (var item in Model.QuestionAnswers)
+            {
+                @if (item.IsRightAnswer)
+                {
+                    <p class="card-group-element correct-answer">- @SharedLocalizer[item.Answer]</p>
+                }
+                else
+                {
+                    <p>- @SharedLocalizer[item.Answer]</p>
+                }
+            }
+        }
+        else
+        {
+            @foreach (var item in Model.QuestionAnswers)
+            {
+                @if (item.IsRightAnswer)
+                {
+                    <p class="card-group-element correct-answer">- @item.Answer</p>
+                }
+                else
+                {
+                    <p>- @item.Answer</p>
+                }
+            }
+        }
+    </div>
+    @if (Model.State == State.Reviewed || Model.State == State.Rejected)
+    {
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-text">@SharedLocalizer["Note", SharedLocalizer["Revise"]] :</span>
+                <textarea asp-for="ReviewComment" class="form-control" rows="3" disabled></textarea>
+            </div>
+        </div>
+    }
+</div>
+
+

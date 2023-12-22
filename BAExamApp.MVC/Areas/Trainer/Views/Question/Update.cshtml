@@ -1,0 +1,122 @@
+﻿@model TrainerQuestionUpdateVM
+
+<div class="card">
+    <div class="page-title">
+        <h3>@ViewLocalizer["Update_Question_Page"]</h3>
+    </div>
+    <div class="question-update-container">
+        <div class=card-wrapper>
+            <form asp-controller="Question" asp-action="Update" class="form" enctype="multipart/form-data">
+                <div class="row mb-3">
+                    <input asp-for="Id" class="form-control" hidden />
+                    <input asp-for="State" class="form-control" hidden />
+                    <input class="form-control" name="subjectIdFromReload" id="subjectIdFromReload" value="@ViewBag.SubjectId" hidden />
+                    <input class="form-control" name="subtopicIdFromReload" id="subtopicIdFromReload" value="@ViewBag.SubtopicId" hidden />
+                    <input class="form-control" name="questionAnswersListFromReload" id="questionAnswersListFromReload" value="@ViewBag.QuestionAnswersList" hidden />
+                    <div class="col-sm-6">
+                        <label asp-for="ProductId" class="col-sm-12 col-form-label col-form-label-lg">@SharedLocalizer["Product"]</label>
+                        <select asp-for="ProductId" asp-items="@ViewBag.ProductList" class="form-select form-select-lg" onchange="onProductChange()">
+                            <option value="" disabled selected>@SharedLocalizer["Choose"]</option>
+                        </select>
+                        <span asp-validation-for="ProductId" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-6">
+                        <label asp-for="SubjectId" class="col-sm-12 col-form-label col-form-label-lg">@SharedLocalizer["Subject"]</label>
+                        <select asp-for="SubjectId" class="form-select form-select-lg" onchange="onSubjectChange()">
+                            <option value="" disabled selected>@SharedLocalizer["Choose"]</option>
+                        </select>
+                        <span asp-validation-for="SubjectId" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-6">
+                        <label asp-for="SubtopicId" class="col-sm-12 col-form-label col-form-label-lg">@SharedLocalizer["Subtopic"]</label>
+                        <select asp-for="SubtopicId" class="form-select form-select-lg">
+                            <option value="" disabled selected>@SharedLocalizer["Choose"]</option>
+                        </select>
+                        <span asp-validation-for="SubtopicId" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-6">
+                        <label asp-for="QuestionType" class="col-sm-12 col-form-label col-form-label-lg">@SharedLocalizer["Question_Type"]</label>
+                        <select asp-for="QuestionType" asp-items="@ViewBag.QuestionTypes" class="form-select form-select-lg" onchange="onQuestionTypeChange()">
+                            <option value="" disabled selected>@SharedLocalizer["Choose"]</option>
+                        </select>
+                        <span asp-validation-for="QuestionType" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label asp-for="QuestionDifficultyId" class="col-sm-12 col-form-label col-form-label-lg">@SharedLocalizer["Question_Difficulty"]</label>
+                        <select asp-for="QuestionDifficultyId" asp-items="@ViewBag.QuestionDifficultiesUpdate" class="form-select form-select-lg" onchange="onQuestionDifficultyChange()">
+                            <option value="" disabled selected>@SharedLocalizer["Choose"]</option>
+                        </select>
+                        <span asp-validation-for="QuestionDifficultyId" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-sm-6">
+                        <label asp-for="TimeGiven" class="col-sm-12 col-form-label col-form-label-lg">@SharedLocalizer["Time_Given"]</label>
+                        <input asp-for="TimeGiven" type="time" class="form-control form-control-lg form-control-solid" disabled />
+                        <span asp-validation-for="TimeGiven" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-6">
+                        <label asp-for="Target" class="col-sm-12 col-form-label col-form-label-lg">@SharedLocalizer["Question_Target"]</label>
+                        <textarea asp-for="Target" rows="4" class="form-control form-control-lg form-control-solid"></textarea>
+                        <span asp-validation-for="Target" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-6">
+                        <label asp-for="Gains" class="col-sm-12 col-form-label col-form-label-lg">@SharedLocalizer["Question_Gains"]</label>
+                        <textarea asp-for="Gains" rows="4" class="form-control form-control-lg form-control-solid"></textarea>
+                        <span asp-validation-for="Gains" class="text-danger"></span>
+                    </div>
+                    <div class="col-sm-12">
+                        <label asp-for="Content" class="col-sm-12 col-form-label col-form-label-lg">@SharedLocalizer["Question_Content"]</label>
+                        <textarea asp-for="Content" rows="4" class="form-control form-control-lg form-control-solid"></textarea>
+                        <span asp-validation-for="Content" class="text-danger"></span>
+                    </div>
+                    @if (Model.State == State.Reviewed)
+                    {
+                        <div class="col-sm-12">
+                            <label asp-for="ReviewComment" class="col-sm-12 col-form-label col-form-label-lg">@SharedLocalizer["Review_Comment"]</label>
+                            <textarea asp-for="ReviewComment" rows="4" class="form-control form-control-lg form-control-solid" disabled></textarea>
+                        </div>
+                        <div class="col-sm-12">
+                            <label asp-for="ReviseComment" class="col-sm-12 col-form-label col-form-label-lg">@SharedLocalizer["Revise_Comment"]</label>
+                            <textarea asp-for="ReviseComment" rows="4" class="form-control form-control-lg form-control-solid"></textarea>
+                            <span asp-validation-for="ReviseComment" class="text-danger"></span>
+                        </div>
+                    }
+                    <div class="col-sm-6">
+                        <label asp-for="Image" class="col-sm-12 col-form-label col-form-label-lg">@SharedLocalizer["Question_Image"]</label>
+                        <input asp-for="NewImage" id="fileInput" type="file" class="form-control form-control-lg form-control-solid" accept=".jpg,.jpeg,.png" />
+                        <br />
+                        <div class="image-input image-input-outline" data-kt-image-input="true" style="position: relative; width:445px; height:500px;">
+                            <div style="display: flex; justify-content: flex-start;">
+                                <img id="previewImage" style="display: none; max-width:545px; max-height:500px;" alt="Preview" />
+
+                                @if (Model.Image != null)
+                                {
+                                    <img id="defaultImage" style="max-width:545px; max-height:500px;" src="data:image/jpeg;base64,@Model.Image" alt="Profile" />
+                                }
+                                                              
+                            </div>
+                            <span asp-validation-for="NewImage.Length" class="text-danger"></span>
+                            <span asp-validation-for="NewImage.ContentType" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <input class="form-control" name="questionAnswerChoices" id="questionAnswerChoices" hidden />
+                    <div class="col-sm-6" id="questionAnswersDiv" hidden>
+                        <label asp-for="QuestionAnswers" class="col-sm-12 col-form-label col-form-label-lg">@SharedLocalizer["Question_Answers"]</label>
+                    </div>
+                </div>
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                    <button class="btn btn-success" type="submit" value="Add">@SharedLocalizer["Save"]</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script src="~/js/questionCreateUpdate.js"></script>
+    <script src="~/js/pictureUpload.js"></script>
+
+      
+}

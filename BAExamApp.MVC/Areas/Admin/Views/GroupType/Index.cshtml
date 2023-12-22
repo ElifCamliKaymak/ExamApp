@@ -1,0 +1,66 @@
+﻿@model IEnumerable<AdminGroupTypeListVM>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<section class="section dashboard">
+    <div class="row">
+        <div class="card recent-sales overflow-auto">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">@SharedLocalizer["List", ViewLocalizer["Group_Type"]]</h5>
+                    <a class="btn btn-primary my-4 col-lg-2" style="width:185px" data-bs-toggle="modal" data-bs-target="#gtContent">@SharedLocalizer["Create", ViewLocalizer["Group_Type"]]</a>
+                </div>
+
+                <table class="table table-row-bordered datatable">
+                    <thead>
+                        <tr class="text-center">
+                            <th class="text-center fw-bold text-white" style="background-color: rgb(134,138,155)">@Html.DisplayNameFor(model => model.Name)</th>
+                            <th class="text-center fw-bold text-white" style="background-color: rgb(134,138,155)">@Html.DisplayNameFor(model => model.Information)</th>
+                            <th class="text-center fw-bold text-white" style="background-color: rgb(134,138,155)">@ViewLocalizer["Group_Type_Operations"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="categories text-center">
+                                    <a>
+                                        <span class="post_category">@item.Name</span>
+                                    </a>
+                                </td>
+                                <td class="categories text-center">
+                                    <a>
+                                        <span class="post_category">@(item.Information.Length > 70 ? item.Information.Substring(0,70) + "..." : item.Information)</span>
+                                    </a>
+                                </td>
+                                <td class="employment text-center">
+                                    <div class="dropdown">
+                                        <button id="optionsButton1">@SharedLocalizer["Options"] <i class="fa-solid fa-chevron-down"></i></button>
+                                        <div class="dropdown-content">
+                                            <a asp-action="Details" asp-route-id="@item.Id">@SharedLocalizer["Details"]</a>
+                                            <a asp-action="Update" asp-route-id="@item.Id">@SharedLocalizer["Update"]</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<partial name="~/Areas/Admin/Views/GroupType/CreatePartialView.cshtml" model="new AdminGroupTypeCreateVM()"></partial>
+<script src="~/dataTable/~/js/main.js"></script>
+<script src="~/lib/student/js/simple-datatables.js"></script>
+
+<script>
+    var classroomCount = @Model.Count();
+    window.onload = function () {
+        paginationSetupDropdown(classroomCount);
+    }
+</script>

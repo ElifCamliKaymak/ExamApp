@@ -1,0 +1,114 @@
+﻿@model AdminExamEvaluatorCreateVM
+
+@{
+    ViewData["Title"] = ViewLocalizer["Add_Evaluators"];
+    var trainerIdStrings = new List<string>();
+    foreach (var trainer in Model.TrainerIds)
+    {
+        trainerIdStrings.Add(trainer.ToString());
+    }
+}
+
+<form method="post" asp-controller="Exam" asp-action="AddEvaluators" asp-route-id="@Model.Id">
+    <div class="page_content_wrap w-75 m-auto">
+        <div class="content_wrap card" style="border-radius: 30px; background: #e0e0e0; box-shadow: 15px 15px 30px #bebebe, -15px -15px 30px #ffffff;">
+            <div class="content card-body">
+                <div class="card-title">
+                    <h3 style="font-size:25px;font-weight:bold"> @ViewLocalizer["Add_Evaluators"]</h3>
+                </div>
+                <article class="bp_members type-bp_members post_item post_item_single post_featured_left post_format_standard page hentry">
+                    <section class="post_content">
+                        <div id="item-header" role="complementary">
+                            <div id="item-body">
+                                <div id="buddydrive-main">
+                                    <div class="fv-row mb-7 fv-plugins-icon-container">
+                                        <label class="form-label mt-3" style="font-size: 20px; font-weight: bold;">
+                                            <label asp-for="Name"></label>
+                                        </label>
+                                        <span class="form-control form-control-solid">@Model.Name</span>
+                                    </div>
+                                    <div class="fv-row mb-7 fv-plugins-icon-container">
+                                        <label class="form-label mt-3" style="font-size: 20px; font-weight: bold;">
+                                            <label asp-for="ExamDateTime"></label>
+                                        </label>
+                                        <span class="form-control form-control-solid">@Model.ExamDateTime</span>
+                                    </div>
+                                    <div class="fv-row mb-7 fv-plugins-icon-container">
+                                        <label class="form-label mt-3" style="font-size: 20px; font-weight: bold;">
+                                            <label asp-for="ExamDuration"></label>
+                                        </label>
+                                        <span class="form-control form-control-solid">@Model.ExamDuration </span>
+                                    </div>
+                                    <div class="fv-row mb-7 fv-plugins-icon-container">
+                                        <label class="form-label mt-3" style="font-size: 20px; font-weight: bold;">
+                                            <label asp-for="ExamRuleName"></label>
+                                        </label>
+                                        <span class="form-control form-control-solid">@Model.ExamRuleName </span>
+                                    </div>
+                                    <div class="fv-row mb-7 fv-plugins-icon-container">
+                                        <label class="form-label mt-3" style="font-size: 20px; font-weight: bold;">
+                                            <label asp-for="ClassroomName"></label>
+                                        </label>
+                                        <span class="form-control form-control-solid">@Model.ClassroomName </span>
+                                    </div>
+                                    <div class="fv-row mb-7 fv-plugins-icon-container">
+                                        <label class="form-label mt-3" style="font-size: 20px; font-weight: bold;">
+                                            <label asp-for="TrainerIds"></label>
+                                        </label>
+                                        <div class="form-group">
+                                            <select asp-for="TrainerIds" class="form-control pillbox-select2" multiple">
+                                                @foreach (var trainer in ViewBag.TrainerList)
+                                                {
+                                                    <option value="@trainer.Value" selected="@(trainerIdStrings.Contains(trainer.Value) ? "selected" : null)">@trainer.Text</option>
+                                                }
+                                            </select>
+                                            <span asp-validation-for="TrainerIds" class="text-danger"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="fv-row mb-7 fv-plugins-icon-container">
+                                    <a type="button" class="w3-blue w3-button w3-round fw-bold" asp-controller="Exam" asp-action="Index">
+                                        @SharedLocalizer["Back_List"]
+                                    </a>
+                                    <button type="submit" class="w3-teal w3-button w3-round fw-bold" name="submitButton">
+                                        @SharedLocalizer["Save"]
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+            </div>
+            </section>
+            </article>
+            <section class="related_wrap related_wrap_empty"></section>
+        </div>
+    </div>
+    </div>
+</form>
+
+@section Scripts{
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/select2.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.pillbox-select2').select2({
+                placeholder: "@SharedLocalizer["Trainer_List"]",
+                allowClear: true,
+                closeOnSelect: false,
+                tags: true,
+                templateResult: function (state) {
+                    if (!state.id) { return state.text; }
+                    return $("<div><input type='checkbox' id='checkbox-" + state.id + "' class='form-check-input' " + (state.selected ? "checked" : "") + "> <label for='checkbox-" + state.id + "'>" + state.text + "</label></div>")
+                        .click(function (e) {
+                            if ($(e.target).is("input")) {
+                                $('.pillbox-select2').trigger('change');
+                            }
+                        });
+                },
+                templateSelection: function (state) {
+                    if (!state.id) { return state.text; }
+                    return $("<div style='padding-left: 22px'>" + state.text + "</div>");
+                },
+            });
+        });
+    </script>
+}

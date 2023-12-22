@@ -1,0 +1,78 @@
+﻿@model AdminClassroomAddStudentVM
+
+@{
+    ViewData["Title"] = ViewLocalizer["Add_Student"];
+}
+
+<div class="content container my-5 d-flex flex-column flex-column-fluid card w-50 m-auto" id="kt_content" style="border-radius: 30px; background: #e0e0e0; box-shadow: 15px 15px 30px #bebebe, -15px -15px 30px #ffffff;">
+    <div class="card-body h-lg-100" id="kt_contacts_main">
+        <div class="card-header" id="kt_chat_contacts_header">
+            <div class="card-title">
+                <h3 class="text-center" style="font-size:25px;font-weight:bold">@ViewLocalizer["Add_Student"]</h3>
+            </div>
+        </div>
+        <div class="card-body pt-5">
+            <section class="post_content">
+                <div id="item-header" role="complementary">
+                    <div id="item-body">
+                        <div id="buddydrive-main">
+                            <form asp-action="AddStudent" method="post">
+                                <input type="hidden" asp-for="ClassroomId" />
+                                <div class="form-check mb-3">
+                                    <label class="form-label" style="font-size: 20px; font-weight: bold;">@ViewLocalizer["Name_Of_Students"]</label>
+                                    <div class="form-group">
+                                        <select class="form-control pillbox-select2" asp-for="SelectedStudentIds" multiple="multiple">
+                                            @foreach (var student in Model.Students)
+                                            {
+                                                <option value="@student.Value" selected="@(Model.AppointedStudentsId.Contains(student.Value) ? "selected" : null)">@student.Text</option>
+                                            }
+                                        </select>
+                                        <span asp-validation-for="SelectedStudentIds" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+                                <div class="separator mb-6"></div>
+                                <div class="d-flex justify-content-end">
+                                    <a class="w3-blue w3-button w3-round fw-bold" asp-controller="Classroom" asp-action="Index">@SharedLocalizer["Back_List"]</a>
+                                    <button type="submit" style="box-shadow:none" class="w3-button w3-round w3-teal fw-bold mx-2">
+                                        <span class="indicator-label">@SharedLocalizer["Update"]</span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <section class="related_wrap related_wrap_empty"></section>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/select2.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.pillbox-select2').select2({
+                placeholder: "@ViewLocalizer["Name_Of_Students"]",
+                allowClear: true,
+                closeOnSelect: false,
+                tags: true,
+                templateResult: function (state) {
+                    if (!state.id) { return state.text; }
+                    return $("<div><input type='checkbox' id='checkbox-" + state.id + "' class='form-check-input' " + (state.selected ? "checked" : "") + "> <label for='checkbox-" + state.id + "'>" + state.text + "</label></div>")
+                        .click(function (e) {
+                            if ($(e.target).is("input")) {
+                                $('.pillbox-select2').trigger('change');
+                            }
+                        });
+                },
+                templateSelection: function (state) {
+                    if (!state.id) { return state.text; }
+                    return $("<div style='padding-left: 22px'>" + state.text + "</div>");
+
+                },
+            });
+        });
+    </script>
+}

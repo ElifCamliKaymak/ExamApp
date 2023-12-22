@@ -1,0 +1,49 @@
+﻿body {
+    margin: 0; /* Sayfa kenar boşluğunu kaldırır */
+    padding: 0; /* Sayfa kenar boşluğunu kaldırır */
+}
+
+main {
+    position: relative;
+}
+
+#nextRuleBtn {
+    position: fixed;
+    bottom: 200px;
+    right: 100px;
+    width: 150px;
+}
+
+.container {
+    display: none;
+}
+
+    .container.rule-1 {
+        display: block;
+    }
+
+    .container.rule-2 {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    .container.rule-3,
+    .container.rule-4,
+    .container.rule-5 {
+        margin: 0 auto;
+    }
+
+.button-div {
+    position: static;
+    display: flex;
+    justify-content: center;
+}
+
+.examRulesDescription {
+    color: #e6353b;
+}
+
+ul > li, ol > li {
+    color: #414b59;
+}

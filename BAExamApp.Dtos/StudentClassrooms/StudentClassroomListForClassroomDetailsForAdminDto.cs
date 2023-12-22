@@ -1,0 +1,11 @@
+﻿using BAExamApp.Core.Enums;
+
+namespace BAExamApp.Dtos.StudentClassrooms;
+public class StudentClassroomListForClassroomDetailsForAdminDto
+{
+    public Guid Id { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Email { get; set; }
+    
+}

@@ -1,0 +1,66 @@
+﻿@model IEnumerable<AdminProductListVM>
+
+@{
+    ViewData["Title"] = ViewLocalizer["Product_List"];
+
+}
+
+<section class="section dashboard">
+    <div class="row">
+        <div class="card recent-sales overflow-auto">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">@SharedLocalizer["List", SharedLocalizer["Product"]]</h5>
+                    <a class="btn btn-primary my-4 col-lg-2" style="width:185px" data-bs-toggle="modal" data-bs-target="#createProductModal">@SharedLocalizer["Create", SharedLocalizer["Product"]]</a>
+                </div>
+                <table class="table table-row-bordered datatable">
+                    <thead>
+                        <tr class="text-center">
+                            <th class="text-center fw-bold text-white" style="background-color: rgb(134,138,155)">@Html.DisplayNameFor(model => model.Name)</th>
+                            <th class="text-center fw-bold text-white" style="background-color: rgb(134,138,155)">@ViewLocalizer["Product_Operations"]</th>
+              
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var product in Model)
+                        {
+                            <tr>
+                                <td class="categories text-center">
+                                    <a class="post_category" asp-action="Details" asp-route-id="@product.Id">
+                                       
+                                        <span class="post_category">@product.Name</span>
+                                    </a>
+                                </td>
+                                <td class="employment text-center">
+                                    <div class="dropdown">
+                                        <button id="optionsButton1">@SharedLocalizer["Options"] <i class="fa-solid fa-chevron-down"></i></button>
+                                        
+                                        <div class="dropdown-content">
+                                            <a asp-action="Details" asp-route-id="@product.Id">@SharedLocalizer["Details"]</a>
+                                            <a asp-action="Update" asp-route-id="@product.Id">@SharedLocalizer["Update"]</a>
+                                            <a asp-action="AddTrainer" asp-route-id="@product.Id">@SharedLocalizer["Add_Instructor"]</a>
+                                            
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/dataTable/~/js/main.js"></script>
+<script src="~/lib/student/js/simple-datatables.js"></script>
+
+<script>
+    var classroomCount = @Model.Count();
+    window.onload = function () {
+        paginationSetupDropdown(classroomCount);
+    }
+</script>
+
+<partial name="~/Areas/Admin/Views/Product/CreatePartialView.cshtml" model="new AdminProductCreateVM()"></partial>

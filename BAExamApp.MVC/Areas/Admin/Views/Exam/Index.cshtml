@@ -1,0 +1,162 @@
+﻿@using BAExamApp.MVC.Areas.Admin.Models.ExamVMs;
+@model IEnumerable<AdminExamListVM>
+
+@{
+	ViewData["Title"] = ViewLocalizer["All_Exam_List"];
+}
+<h5 class="card-title" id="examListTitle">@SharedLocalizer["All_Exams_List"]</h5>
+
+<head>
+	<link href="~/css/examListFilterTool.css" rel="stylesheet" />
+</head>
+
+<div class="flex-container">
+	<i class="fa-solid fa-circle-exclamation fa-fade fa-xl"></i>
+	<p class="message">"@SharedLocalizer["Exam_Filter_Warning"]"</p>
+</div>
+<div class="card-filtered">
+	<hr />
+	<div class="dropdown-container">
+		<label>@SharedLocalizer["Classroom_Name"]</label>
+		<select asp-items="ViewBag.className" id="classroomDropdown" class="dropdown-text">
+			<option value="">@SharedLocalizer["Choose"]</option>
+		</select>
+		<span class="text-danger"></span>
+	</div>
+	<div class="dropdown-container">
+		<label>@SharedLocalizer["Exam_Rule"]</label>
+		<select asp-items="ViewBag.ruleName" id="rulenameDropdown" class="dropdown-text">
+			<option value="">@SharedLocalizer["Choose"]</option>
+		</select>
+		<span class="text-danger"></span>
+	</div>
+
+	<div>
+		<label>@SharedLocalizer["Start_Time"]</label>
+		<input class="datePicker" type="datetime-local" id="datetimePickerStart" name="datetimePickerStart" />
+	</div>
+	<div>
+		<label>@SharedLocalizer["End_Time"] </label>
+		<input class="datePicker" type="datetime-local" id="datetimePickerEnd" name="datetimePickerEnd" />
+	</div>
+
+	<div>
+		<label class="student-label">@SharedLocalizer["All_Exams_List"]</label>
+		<input type="checkbox" id="ActiveExams" name="activexams" />
+	</div>
+
+	<button class="filter">@SharedLocalizer["Search"]</button>
+</div>
+<hr />
+
+
+
+
+
+<div id="examList" class="examListContainer" style="display: none;">
+	@Html.Partial("~/Areas/Admin/Views/Shared/PartialViews/_ExamListPartial.cshtml", Model)
+</div>
+
+@section Scripts {
+	<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+	<script src="~/dataTable/~/js/main.js"></script>
+	<script src="~/js/select2.js"></script>
+	<script src="~/lib/student/js/simple-datatables.js"></script>
+
+	<script>
+		var classroomCount = @Model.Count();
+		window.onload = function () {
+			paginationSetupDropdown(classroomCount);
+		}
+	</script>
+
+	<script>
+		$(document).ready(function () {
+			$('#classroomDropdown').select2();
+		});
+		$(document).ready(function () {
+			$('#rulenameDropdown').select2();
+		});
+		$(document).ready(function () {
+			$('#ActiveExams').change(function () {
+				var isChecked = $(this).prop('checked');
+				var dropdown = document.getElementById("classroomDropdown");
+				$('#classroomDropdown, #rulenameDropdown, #datetimePickerStart, #datetimePickerEnd').prop('disabled', isChecked);
+
+				if (isChecked) {
+					$('#classroomDropdown').val('').trigger('change');
+					$('#rulenameDropdown').val('').trigger('change');
+					$('#datetimePickerStart, #datetimePickerEnd').val('');
+				}
+
+			});
+		});
+		function sortDropdownOptions(dropdownId) {
+			var dropdown = $("#" + dropdownId);
+			var options = dropdown.find("option");
+
+			options.sort(function (a, b) {
+				return a.text.localeCompare(b.text);
+			});
+
+			dropdown.empty().append(options);
+		}
+		sortDropdownOptions("classroomDropdown");
+		sortDropdownOptions("rulenameDropdown");
+		$(document).ready(function () {
+
+			$('.filter').click(function () {
+				var selectedClassroomId = $("#classroomDropdown").val();
+				var selectedRulenameId = $("#rulenameDropdown").val();
+				var datetimePickerStart = $("#datetimePickerStart").val();
+				var datetimePickerEnd = $("#datetimePickerEnd").val();
+				var isActiveExams = $("#ActiveExams").prop('checked');
+
+				if (!selectedClassroomId && !selectedRulenameId && !datetimePickerStart && !datetimePickerEnd && !isActiveExams) {
+					alert('Lütfen En Az Bir Filtreleme Kriterini Doldurun.');
+					return;
+				}
+
+				getExams(selectedClassroomId, selectedRulenameId, datetimePickerStart, datetimePickerEnd, isActiveExams);
+			});
+
+			function getExams(selectedClassroomId, selectedRulenameId, datetimePickerStart, datetimePickerEnd, isActiveExams) {
+				$.ajax({
+					url: '/Admin/Exam/GetExamsByStatus',
+					type: 'GET',
+					contentType: 'application/json',
+					data: { selectedClassroomId, selectedRulenameId, datetimePickerStart, datetimePickerEnd, isActiveExams },
+					success: function (data) {
+
+						$("#examList").show();
+						$('.examListContainer').html(data);
+						updateExamListTitle(selectedClassroomId, selectedRulenameId, datetimePickerStart, datetimePickerEnd);
+					},
+					error: function (error) {
+						console.log(error);
+						alert('Sınavlar getirilirken bir hata oluştu.');
+					}
+				});
+			}
+			function updateExamListTitle(status) {
+				var title = '';
+				switch (status) {
+					case 'past':
+						title = '@SharedLocalizer["Past_Exams_List"]';
+						break;
+					case 'ongoing':
+						title = '@SharedLocalizer["Ongoing_Exams_List"]';
+						break;
+					case 'upcoming':
+						title = '@SharedLocalizer["Upcoming_Exams_List"]';
+						break;
+					default:
+						title = '@SharedLocalizer["All_Exams_List"]';
+						break;
+				}
+
+				$('#examListTitle').text(title);
+			}
+		});
+	</script>
+}

@@ -1,0 +1,113 @@
+﻿@model AdminExamRuleUpdateVM
+
+@{
+    ViewData["Title"] = SharedLocalizer["Update"];
+}
+
+<div class="card w-50 m-auto mb-5 mt-5" style="border-radius: 30px; background: #e0e0e0; box-shadow: 15px 15px 30px #bebebe, -15px -15px 30px #ffffff;">
+    <div class="content container my-5 d-flex flex-column flex-column-fluid card-body" id="kt_content">
+        <div class=" h-lg-100" id="kt_contacts_main">
+            <h2 class=" text-center" style="font-size:25px;font-weight:bold">@ViewLocalizer["Update_Exam_Rule"]</h2>
+            <div class="card-body pt-5">
+                <form asp-controller="ExamRule" asp-action="Update" onsubmit="handleRule()" class="form" enctype="multipart/form-data">
+                    <div class="mb-7">
+                        <input asp-for="Id" class="form-control" hidden />
+                        <div class="row mb-3">
+                            <label asp-for="Name" class="col-sm-2 col-form-label col-form-label-lg"></label>
+                            <div class="col-sm-10">
+                                <input asp-for="Name" type="text" class="form-control form-control-lg form-control-solid" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label asp-for="Description" class="col-sm-2 col-form-label col-form-label-lg"></label>
+                            <div class="col-sm-10">
+                                <textarea asp-for="Description" type="text" class="form-control form-control-lg form-control-solid" style="resize:none;" rows="3"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label asp-for="ProductId" class="col-sm-2 col-form-label col-form-label-lg">@SharedLocalizer["Product"]</label>
+                            <div class="col-sm-10">
+                                <select asp-for="ProductId" asp-items="@ViewBag.ProductList" class="form-select" onchange="onProductChange()">
+                                    <option value="" disabled selected>@SharedLocalizer["Choose"]</option>
+                                </select>
+                                <span asp-validation-for="ProductId" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <input class="form-control" name="examRuleSubjects" id="examRuleSubjects" value="@ViewBag.examRuleSubtopicsJSON" hidden />
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-sm-2">
+                            <label class="form-label-lg" for="SubjectId">@SharedLocalizer["Subject"]</label>
+                            <select class="form-select" id="SubjectId" onchange="onSubjectChange()">
+                                <option value="" disabled selected>@SharedLocalizer["Choose"]</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="form-label-lg" for="SubtopicId">@SharedLocalizer["Subtopic"]</label>
+                            <select class="form-select" id="SubtopicId">
+                                <option value="" disabled selected>@SharedLocalizer["Choose"]</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="form-label-lg" for="ExamType">@SharedLocalizer["Exam_Type"]</label>
+                            <select class="form-select" name="ExamType" id="ExamType" onchange="onExamTypeChange()">
+                                <option value="" disabled selected>@SharedLocalizer["Choose"]</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="form-label-lg" for="QuestionType">@SharedLocalizer["Question_Type"]</label>
+                            <select class="form-select" id="QuestionType">
+                                <option value="" disabled selected>@SharedLocalizer["Choose"]</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="form-label-lg" for="QuestionDifficultyId">@SharedLocalizer["Question_Difficulty"]</label>
+                            <select class="form-select" id="QuestionDifficultyId">
+                                <option value="" disabled selected>@SharedLocalizer["Choose"]</option>
+                            </select>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <label class="form-label-lg" for="QuestionCount">@SharedLocalizer["Question_Count"]</label>
+                            <input class="form-control form-control-solid" type="number" id="QuestionCount" />
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="btn btn-sm btn-primary" type="button" onclick="handleRule(true)">@SharedLocalizer["Add_New_Rule"]</button>
+                        </div>
+                        <span class="text-danger" id="inputValidation" hidden>@SharedLocalizer["Fill_All_Inputs"]</span>
+                        <span class="text-danger" id="sameRuleValidation" hidden>@SharedLocalizer["Same_Rule_Exists"]</span>
+                        <div class="separator mt-3"></div>
+                    </div>
+                    <div class="row mb-3">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="col-sm-2">@SharedLocalizer["Subject"]</th>
+                                    <th class="col-sm-2">@SharedLocalizer["Subtopic"]</th>
+                                    <th class="col-sm-2">@SharedLocalizer["Exam_Type"]</th>
+                                    <th class="col-sm-2">@SharedLocalizer["Question_Type"]</th>
+                                    <th class="col-sm-2">@SharedLocalizer["Question_Difficulty"]</th>
+                                    <th class="col-sm-2">@SharedLocalizer["Question_Count"]</th>
+                                    <th class="col-sm-2">@SharedLocalizer["Actions"]</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableContent">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-3">
+                        <a class="w3-blue w3-button w3-round fw-bold mx-2" asp-action="Index">@SharedLocalizer["Back_List"]</a>
+                        <button type="submit" value="Update" class="w3-amber w3-button w3-round fw-bold mx-2">@SharedLocalizer["Save"]</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/exam-rule-update.js"></script>
+}

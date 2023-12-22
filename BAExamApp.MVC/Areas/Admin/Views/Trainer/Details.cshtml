@@ -1,0 +1,200 @@
+﻿@model AdminTrainerDetailsVM
+
+@{
+    ViewData["Title"] = ViewLocalizer["Trainer_Details"];
+}
+
+<div class="content container my-5 d-flex flex-column flex-column-fluid card w-50" id="kt_content" style="border-radius: 30px; background: #e0e0e0; box-shadow: 15px 15px 30px #bebebe, -15px -15px 30px #ffffff;">
+    <div class="card-body h-lg-100 w-100" id="kt_contacts_main">
+        <div class="card-header pt-7" id="kt_chat_contacts_header">
+            <div class="card-title">
+                <h3 class="text-center" style="font-size:25px;font-weight:bold">@ViewLocalizer["Trainer_Details"]</h3>
+            </div>
+        </div>
+        <div class="card-body pt-5">
+            <div class="row">
+                <div class="col-8">
+                    <div class="card-body" style="background-color:white; border-radius:10px;">
+                        <div id="cover-image-container">
+                            @if (Model.Image != null)
+                            {
+                                <div id="item-header-cover-image">
+                                    <img src="data:image/jpeg;base64,@Model.Image"
+                                         class="avatar user-1-avatar avatar-150 photo" width="150"
+                                         height="150" alt="" />
+                                </div>
+                            }
+                            else
+                            {
+                                <div id="item-header-cover-image">
+                                    <img src="~/media/avatars/blank.png"
+                                         class="avatar user-1-avatar avatar-150 photo" width="150"
+                                         height="150" alt="" />
+                                </div>
+                            }
+                        </div>
+                        <div id="item-body">
+                            <div id="buddydrive-main">
+                                <div>
+                                    <div class="buddydrive-content mt-2">
+                                        <span style="font-size: 15px; font-weight: bold;"><b>@Html.DisplayNameFor(model => model.FirstName) :</b></span>
+                                        <span>@Model.FirstName</span>
+                                    </div>
+                                    <div class="buddydrive-content mt-2">
+                                        <span style="font-size: 15px; font-weight: bold;"><b>@Html.DisplayNameFor(model => model.LastName) :</b></span>
+                                        <span>@Model.LastName</span>
+                                    </div>
+                                    <div class="buddydrive-content mt-2">
+                                        <span style="font-size: 15px; font-weight: bold;"><b>@Html.DisplayNameFor(model => model.Gender) :</b></span>
+                                        <span>@(Model.Gender == true ? SharedLocalizer["Man"] : SharedLocalizer["Woman"])</span>
+                                    </div>
+                                    <div class="buddydrive-content mt-2">
+                                        <span style="font-size: 15px; font-weight: bold;"><b>@Html.DisplayNameFor(model => model.Email) :</b></span>
+                                        <span>@Model.Email</span>
+                                    </div>
+
+                                    <div class="buddydrive-content mt-2">
+                                        <span style="font-size: 15px; font-weight: bold;"><b>@Html.DisplayNameFor(model => model.DateOfBirth) :</b></span>
+                                        <span>@Model.DateOfBirth.ToShortDateString()</span>
+                                    </div>
+                                    <div class="buddydrive-content mt-2">
+                                        <span style="font-size: 15px; font-weight: bold;"><b>@Html.DisplayNameFor(model => model.CityName) :</b></span>
+                                        <span>@Model.CityName</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    @*Tabloya Ait Container*@
+                    <div class="tables-grid-container" style="display:grid; grid-template-columns: 12px auto; column-gap: 24px;">
+                        <div class="sc_table recent_jobs">
+                            <table summary="1" cellspacing="0">
+                                <tbody>
+                                    <tr>
+                                        <td style="font-size: 15px; font-weight: bold;">@SharedLocalizer["Talent_Names"]</td>
+                                    </tr>
+                                    @foreach (var talent in Model.TrainerTalents)
+                                    {
+                                        <tr>
+                                            <td class="categories">
+                                                <span class="post_category">@talent.TalentName</span>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    @*Tabloya Ait Container Sonu*@
+                </div>
+            </div>
+            <div class="separator mb-6"></div>
+
+            @if (Model.OtherEmails.Count != 0)
+            {
+                <div class="tables-grid-container" style="display:grid; grid-template-columns: auto auto; column-gap: 24px;">
+                    <div class="sc_table recent_jobs">
+                        <table summary="1" cellspacing="0">
+                            <tbody>
+                                <tr>
+                                    <td style="font-size: 15px; font-weight: bold;">@ViewLocalizer["OtherEmails"]</td>
+                                </tr>
+
+                                @foreach (var otheremails in Model.OtherEmails)
+                                {
+                                    <tr>
+                                        <td class="otheremails">
+                                            <span class="post_category">@otheremails</span>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+            @*Tabloya Ait Container*@
+            <div class="tables-grid-container" style="display:grid; grid-template-columns: auto auto; column-gap: 24px;">
+                <div class="sc_table recent_jobs">
+                    <table summary="1" cellspacing="0">
+                        <tbody>
+                            <tr>
+                                <td style="font-size: 15px; font-weight: bold;">@SharedLocalizer["Classroom_Name"]</td>
+                                <td style="font-size: 15px; font-weight: bold;">@SharedLocalizer["Opening_Date"]</td>
+                                <td style="font-size: 15px; font-weight: bold;">@SharedLocalizer["Closed_Date"]</td>
+                                <td style="font-size: 15px; font-weight: bold;">@SharedLocalizer["Student_Count"]</td>
+                            </tr>
+                            @foreach (var clasroom in Model.TrainerClassrooms)
+                            {
+                                <tr>
+                                    <td class="categories">
+                                        <span class="post_category">@clasroom.ClassroomName</span>
+                                    </td>
+                                    <td class="categories">
+                                        <span class="post_category">@clasroom.OpeningDate.ToShortDateString()</span>
+                                    </td>
+                                    <td class="categories">
+                                        <span class="post_category">@clasroom.ClosedDate.ToShortDateString()</span>
+                                    </td>
+                                    <td class="categories">
+                                        <span class="post_category">@clasroom.StudentCount</span>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @*Tabloya Ait Container Sonu*@
+
+
+
+            <div class="separator mb-6"></div>
+            <div class="d-flex justify-content-end">
+                <a type="button" class="w3-blue w3-button w3-round fw-bold mx-2" asp-controller="Trainer" asp-action="Index">@SharedLocalizer["Back_List"]</a>
+                <a class="w3-teal w3-button w3-round mx-2 fw-bold" asp-action="Update" asp-route-id="@Model.Id">@SharedLocalizer["Edit"]</a>
+                <a class="w3-red w3-button w3-round cursor-pointer deleteAction mx-2 fw-bold" data-id="@Model.Id"> @SharedLocalizer["Delete"] </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script src="~/lib/limonte-sweetalert2/sweetalert2.all.js"></script>
+    <script>
+        $(".deleteAction").click(function () {
+            const id = $(this).attr("data-id");
+            Swal.fire({
+                title: 'Emin misiniz?',
+                text: "Bu işlem geri alınamaz!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Evet, sil!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "GET",
+                        url: "@Url.Action("Delete")" + "?id=" + id,
+                        success: function (result) {
+                            if (result.isSuccess) {
+                                setTimeout(() => location.href = "/Admin/Trainer", 2000)
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('[ data-bs-toggle="tooltip"]').tooltip();
+        });
+    </script>
+}

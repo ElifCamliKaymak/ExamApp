@@ -1,0 +1,38 @@
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel;
+using BAExamApp.Entities.Enums;
+
+namespace BAExamApp.MVC.Areas.Admin.Models.ExamVMs;
+
+public class AdminExamListVM
+{
+    public Guid Id { get; set; }
+
+    [DisplayName("Name_Of_The_Exam")]
+    public string Name { get; set; }
+
+    [DisplayName("Exam_Type")]
+    public ExamType ExamType { get; set; }
+
+    [DisplayName("Sınıf Adı")]
+    public List<string>? ClassroomNames { get; set; }
+
+    [Display(Name = "Exam_Date")]
+    public DateTime ExamDateTime { get; set; } = DateTime.Now;
+
+    [Display(Name = "Exam_Duration")]
+    public TimeSpan ExamDuration { get; set; }
+
+    [DisplayName("Question_CreatedDate")]
+    public DateTime CreatedDate { get; set; }
+
+    [DisplayName("Exam_Rule_Name")]
+    public string ExamRuleName { get; set; }
+
+    [DisplayName("Student_Name")]
+    public List<string> StudentName { get; set; }
+
+    [DisplayName("Student_Exam_Score")]
+    public List<decimal?> StudentExamScore { get; set; }
+    public List<(string?, decimal?, string?)> tooltipStudentList { get; set; }
+}

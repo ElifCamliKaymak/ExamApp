@@ -1,0 +1,191 @@
+﻿@using BAExamApp.MVC.Areas.Admin.Models.ExamVMs;
+@model AdminCombinedExamDetailsVM
+
+@{
+    ViewData["Title"] = ViewLocalizer["Exam_Detail"];
+}
+
+<div class="page_content_wrap w-80 m-auto">
+    <div class="content_wrap card w-100" style="border-radius: 30px; background: #e0e0e0; box-shadow: 15px 15px 30px #bebebe, -15px -15px 30px #ffffff;">
+        <div class="content card-body">
+            <div class="card-title">
+                <h3 class="text-center" style="font-size:25px;font-weight:bold"> @ViewLocalizer["Exam_Detail"]</h3>
+            </div>
+            <article class="bp_members type-bp_members post_item post_item_single post_featured_left post_format_standard page hentry">
+                <section class="post_content">
+                    <div id="item-header" role="complementary">
+                        <div id="item-body">
+                            <div id="buddydrive-main">
+                                <div class="fv-row mb-7 fv-plugins-icon-container">
+                                    <label class="form-label mt-0" style="font-size: 18px; font-weight: bold;">
+                                        <label asp-for="ExamDetail.Name"></label>
+                                        <span style="font-size: 14px">: @Model.ExamDetail.Name</span>
+                                    </label>
+                                    
+                                </div>
+                                <div class="fv-row mb-7 fv-plugins-icon-container">
+                                    <label class="form-label mt-0" style="font-size: 18px; font-weight: bold;">
+                                        <label asp-for="ExamDetail.ExamDateTime"></label>
+                                        <span style="font-size: 14px">: @Model.ExamDetail.ExamDateTime.ToShortDateString() </span>
+                                    </label>
+                                    
+                                </div>
+                                <div class="fv-row mb-7 fv-plugins-icon-container">
+                                    <label class="form-label mt-0" style="font-size: 18px; font-weight: bold;">
+                                        <label asp-for="ExamDetail.ExamDuration"></label>
+                                        <span style="font-size: 14px">: @Model.ExamDetail.ExamDuration </span>
+                                    </label>
+                                </div>
+                                <div class="fv-row mb-7 fv-plugins-icon-container">
+                                    <label class="form-label mt-0" style="font-size: 18px; font-weight: bold;">
+                                        <label asp-for="ExamDetail.MaxScore"></label>
+                                        <span style="font-size: 14px">: @Model.ExamDetail.MaxScore </span>
+                                    </label>
+                                </div>
+                                <div class="fv-row mb-7 fv-plugins-icon-container">
+                                    <label class="form-label mt-0" style="font-size: 18px; font-weight: bold;">
+                                        <label asp-for="ExamDetail.BonusScore"></label>
+                                        <span style="font-size: 14px">: @Model.ExamDetail.BonusScore </span>
+                                    </label>
+                                </div>
+                                <div class="fv-row mb-7 fv-plugins-icon-container">
+                                    <label class="form-label mt-0" style="font-size: 18px; font-weight: bold;">
+                                        <label asp-for="ExamDetail.ExamRuleName"></label>
+                                        <span style="font-size: 14px">: @Model.ExamDetail.ExamRuleName </span>
+                                    </label>
+                                    
+                                </div>
+                                <div class="fv-row mb-7 fv-plugins-icon-container">
+                                    <label class="form-label mt-0" style="font-size: 18px; font-weight: bold;">
+                                        <label asp-for="ExamDetail.ClassroomName"></label>
+                                        <span style="font-size: 14px">: @Model.ExamDetail.ClassroomName </span>
+                                    </label>
+                                    
+                                </div>
+
+                                <div class="sc_table recent_jobs">
+                                    <table summary="1" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="4">@Html.DisplayNameFor(model => model.ExamDetail.ExamsEvaluators)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>@SharedLocalizer["Exams_Evaluators_Name"]</td>
+                                                <td>@SharedLocalizer["Actions"]</td>
+                                            </tr>
+                                            @if (Model.ExamDetail.ExamsEvaluators != null)
+                                            {
+                                                @foreach (var item in Model.ExamDetail.ExamsEvaluators)
+                                                {
+                                                    <tr>
+                                                        <td class="categories">
+                                                            <span class="post_category">@item.EvaluatorName</span>
+                                                        </td>
+                                                        <td>
+                                                            <a class="w3-red w3-button w3-round fw-bold" type="button" asp-action="RemoveEvaluator" asp-route-id="@item.EvaluatorId">
+                                                                @SharedLocalizer["Delete"]
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                }
+                                            }
+                                            else if (Model.ExamDetail.ExamsEvaluators == null)
+                                            {
+                                                <tr>
+                                                    <td class="categories">
+                                                        <span class="post_category">@SharedLocalizer["Evaluator_Not_Assigned"]</span>
+                                                    </td>
+                                                </tr>
+                                            }
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <br/>
+
+                                <div class="sc_table recent_jobs">
+                                    <table summary="1" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="4">@SharedLocalizer["Exam_Results"]</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr class="text-center">
+                                                <td class="text-center fw-bold text-white">@SharedLocalizer["Full_Name"]</td>
+                                                <td class="text-center fw-bold text-white">@SharedLocalizer["Classroom"]</td>
+                                                <td class="text-center fw-bold text-white">@SharedLocalizer["Student_Score"] / @SharedLocalizer["Max_Score"]</td>
+                                                <td class="text-center fw-bold text-white">@SharedLocalizer["Exams_Evaluators_Name"]</td>
+                                                <td class="text-center fw-bold text-white">@SharedLocalizer["Student_Operation"]</td>
+                                            </tr>
+
+                                            @foreach (var item in Model.StudentExamDetails)
+                                            {
+                                                <tr>
+                                                    <td class="categories text-center">
+                                                        <a>
+                                                            <span class="post_category">@item.StudentName</span>
+                                                        </a>
+                                                    </td>
+
+                                                    <td class="categories text-center">
+                                                        @foreach (var classroomName in item.ClassroomNames)
+                                                        {
+                                                            if (item.ExamName.Contains(classroomName))
+                                                            {
+                                                                <span class="post_category">@classroomName</span>
+                                                            }
+                                                        }
+                                                    </td>
+
+                                                    <td class="categories text-center">
+                                                        @if (item.Score == null)
+                                                        {
+                                                            <a>
+                                                                <span class="post_category text-danger"><b>@SharedLocalizer["Did_Not_Take_The_Exam"]</b></span>
+                                                            </a>
+                                                        }
+                                                        else
+                                                        {
+                                                            <a>
+                                                                <span class="post_category">@item.Score / @item.MaxScore</span>
+                                                            </a>
+                                                        }
+                                                    </td>
+                                                    <td class="categories text-center">
+                                                        <a>
+                                                            <span class="post_category">@item.EvaluatorName</span>
+                                                        </a>
+                                                    </td>
+                                                    <td class="categories text-center">
+                                                        <div class="dropdown">
+                                                            <button id="optionsButton1">@SharedLocalizer["Options"] <i class="fa-solid fa-chevron-down"></i></button>
+                                                            <div class="dropdown-content">
+                                                                <a asp-area="Admin" asp-controller="Student" asp-action="StudentExams" asp-route-id="@item.Id" target="_blank">@SharedLocalizer["Exams"]</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                </div>
+
+                                <div class="fv-row mb-7 fv-plugins-icon-container">
+                                    <a type="button" class="w3-blue w3-button w3-round fw-bold" asp-controller="Exam" asp-action="Index">
+                                        @SharedLocalizer["Back_List"]
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </article>
+            <section class="related_wrap related_wrap_empty"></section>
+        </div>
+    </div>
+</div>

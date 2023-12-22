@@ -1,0 +1,361 @@
+﻿@model AdminClassroomDetailsVM
+
+@{
+    ViewData["Title"] = ViewLocalizer["Classroom_Details"];
+}
+
+<style>
+    .tabs-container {
+        display: flex;
+    }
+
+    .tab-item {
+        padding: 10px 20px;
+        cursor: pointer;
+        border: 1px solid #ccc;
+        border-bottom: none;
+    }
+
+        .tab-item.active {
+            background-color: #f0f0f0;
+            border-bottom: 1px solid #ccc;
+        }
+
+    .tab-content {
+        display: none;
+        padding: 20px;
+        border: 1px solid #ccc;
+    }
+
+        .tab-content.active {
+            display: block;
+        }
+
+    .exams-button {
+        background-color: #e0e0e0;
+        color: black;
+        padding: 5px 5px;
+        transition: background-color 0.3s ease;
+        border-radius: 8px;
+    }
+
+        .exams-button:hover {
+            background-color: #c0c0c0;
+        }
+
+</style>
+
+<div class="content container my-5 d-flex flex-column flex-column-fluid card w-50 m-auto" id="kt_content" style="border-radius: 30px; background: #e0e0e0; box-shadow: 15px 15px 30px #bebebe, -15px -15px 30px #ffffff;">
+    <div class="card-body h-lg-100" id="kt_contacts_main">
+        <div class="card-header" id="kt_chat_contacts_header">
+            <div class="card-title">
+                <h3 class="text-center" style="font-size:25px;font-weight:bold">@Model.Name @ViewLocalizer["Classroom_Details"]</h3>
+            </div>
+        </div>
+        <div class="card-body pt-5">
+            <section class="post_content">
+                <div id="item-header" role="complementary">
+                    <div id="item-body">
+                        <div id="buddydrive-main">
+                            <div class="tab-buttons">
+                                <button class="tab-button active" onclick="openTab(event, 'classDetail')">Sınıf Detayı</button>
+                                <button class="tab-button" onclick="openTab(event, 'trainers')">Eğitmenler</button>
+                                <button class="tab-button" onclick="openTab(event, 'students')">Öğrenciler</button>
+                                <button class="tab-button" onclick="openTab(event, 'products')">Ürünler</button>
+                                <button class="tab-button" onclick="openTab(event, 'exams')">Sınavlar</button>
+                            </div>
+
+                            <div class="tab-content active" id="classDetail">
+                                <!-- Sınıf detayı içeriği -->
+                                <div class="sc_table recent_jobs">
+                                    <table class="table" summary="1" cellspacing="0">
+                                        <thead>
+                                            <tr>
+
+                                                <th colspan="4">@ViewLocalizer["Classroom_Details"]</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                            </tr>
+                                            <tr>
+                                                <td class="categories">
+                                                    <span class="post_category">Açılış Tarihi:</span>
+                                                </td>
+
+                                                <td class="categories">
+                                                    <span class="post_category">@Model.OpeningDate.ToShortDateString()</span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="categories">
+                                                    <span class="post_category">Kapanış Tarihi:</span>
+                                                </td>
+                                                <td class="categories">
+                                                    <span class="post_category"> @Model.ClosedDate.ToShortDateString()</span>
+
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="categories">
+                                                    <span class="post_category">Grup Türü Adı:</span>
+                                                </td>
+                                                <td class="categories">
+                                                    <span class="post_category"> @Model.GroupTypeName </span>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="categories">
+                                                    <span class="post_category">Şube Adı: </span>
+                                                </td>
+                                                <td class="categories">
+                                                    <span class="post_category">@Model.BranchName </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="tab-content" id="trainers">
+                                <!-- Eğitmen içeriği -->
+                                <div class="sc_table recent_jobs">
+                                    <table summary="1" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="4">Trainers</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>First Name</td>
+                                                <td>Last Name</td>
+                                                <td>Assigned Date</td>
+                                                <td>Resigned Date</td>
+                                            </tr>
+                                            @foreach (var trainer in Model.TrainerClassrooms)
+                                            {
+                                                <tr>
+                                                    <td class="categories">
+                                                        <span class="post_category">@trainer.FirstName</span>
+                                                    </td>
+                                                    <td class="categories">
+                                                        <span class="post_category">@trainer.LastName</span>
+                                                    </td>
+                                                    <td class="categories">
+                                                        <span class="post_category">@trainer.AssignedDate.ToShortDateString()</span>
+                                                    </td>
+                                                    <td class="categories">
+                                                        <span class="post_category">
+                                                            @if (trainer.ResignedDate.HasValue)
+                                                            {
+                                                                @trainer.ResignedDate.Value.ToShortDateString()
+                                                            }
+                                                            else
+                                                            {
+                                                                @SharedLocalizer["Still_Active"]
+                                                            }
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="tab-content" id="students">
+                                <!-- Öğrenciler içeriği -->
+                                <div class="sc_table recent_jobs">
+                                    <table summary="1" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="4">Students</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>First Name</td>
+                                                <td>Last Name</td>
+                                                <td>e-mail</td>
+                                                <td></td>
+                                            </tr>
+                                            @foreach (var student in Model.StudentClassrooms)
+                                            {
+                                                <tr>
+                                                    <td class="categories">
+                                                        <span class="post_category">@student.FirstName</span>
+                                                    </td>
+                                                    <td class="categories">
+                                                        <span class="post_category">@student.LastName</span>
+                                                    </td>
+                                                    <td class="categories">
+                                                        <span class="post_category">@student.Email</span>
+                                                    </td>
+                                                    <td class="categories">
+                                                        <div class="dropdown">
+                                                            <button id="optionsButton1">@SharedLocalizer["Options"] <i class="fa-solid fa-chevron-down"></i></button>
+                                                            <div class="dropdown-content">
+                                                                <a asp-area="Admin" asp-controller="Student" asp-action="StudentExams" asp-route-id="@student.Id" target="_blank">@SharedLocalizer["Exams"]</a>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                            <div class="tab-content" id="products">
+                                <!-- Ürünler içeriği -->
+                                <div class="sc_table recent_jobs">
+                                    <table summary="1" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="4">Products</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Product Name</td>
+                                            </tr>
+                                            @foreach (var productName in Model.ProductNames)
+                                            {
+                                                <tr>
+                                                    <td class="categories">
+                                                        <span class="post_category">@productName</span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                            <div class="tab-content" id="exams">
+                                <!-- Sınav içeriği -->
+                                <div class="sc_table recent_jobs">
+                                    <table summary="1" cellspacing="0">
+                                        <thead>
+                                            <tr>
+                                                <th colspan="4">@SharedLocalizer["Exams"]</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>@SharedLocalizer["Exam_Name"]</td>
+                                                <td>@SharedLocalizer["Exam_Date"]</td>
+                                                <td>@SharedLocalizer["Exam_Details"]</td>
+                                                <td>@SharedLocalizer["Exam_Attendance_Status"]</td>
+                                                <td>@Html.DisplayNameFor(model=>model.ClassGradeAverage)</td>                                   
+                                            </tr>
+                                            @if (ViewBag.ClassroomExams.Count == 0)
+                                            {
+                                                <tr>
+                                                    <td class="categories">
+                                                        <span>@SharedLocalizer["Exam_Not_Found"]</span>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            @foreach (var item in ViewBag.ClassroomExams)
+                                            {
+                                                <tr>
+
+                                                    <td class="categories">
+                                                        <span class="post_category">@item.Name</span>
+                                                    </td>
+                                                    <td class="categories">
+                                                        <span class="post_category">@item.ExamDateTime</span>
+                                                    </td>
+                                                    <td class="categories">
+                                                        <a class="exams-button" asp-controller="Exam" asp-action="Details" asp-route-id="@item.Id">@SharedLocalizer["Exam_Details"]</a>
+                                                    </td>
+                                                    <td class="categories">
+
+                                                        <span class="post_category">@item.StudentExamScoreCount / @item.StudentCount</span>
+
+
+                                                    </td>
+                                                    <td class="categories">
+                                                        @if (item.ClassGradeAverage != null)
+                                                        {
+                                                            <span class="post_category">@item.ClassGradeAverage</span>
+                                                        }
+                                                        else
+                                                        {
+                                                            <span class="post_category">Sınav Sonuç Bilgisi Bulunmuyor</span>
+                                                        }
+                                                    </td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                            </div>
+                            <div class="separator mb-6"></div>
+                            <div class="d-flex justify-content-end">
+                                <a class="w3-blue w3-button w3-round fw-bold" asp-controller="Classroom" asp-action="Index">@SharedLocalizer["Back_List"]</a>
+                                <a class="w3-teal w3-button w3-round mx-2 fw-bold" asp-action="Update" asp-route-id="@Model.Id">@SharedLocalizer["Edit"]</a>
+                                <a class="w3-red w3-button w3-round cursor-pointer deleteAction fw-bold " data-id="@Model.Id"> @SharedLocalizer["Delete"] </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <section class="related_wrap related_wrap_empty"></section>
+    </div>
+</div>
+@section Scripts
+{
+    <script src="~/lib/limonte-sweetalert2/sweetalert2.all.js"></script>
+    <script>
+        $(".deleteAction").click(function () {
+            const id = $(this).attr("data-id");
+            Swal.fire({
+                title: 'Emin misiniz?',
+                text: "Bu işlem geri alınamaz!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Evet, sil!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "GET",
+                        url: "@Url.Action("Delete")" + "?id=" + id,
+                        success: function (result) {
+                            if (result.isSuccess) {
+                                setTimeout(() => location.href = "@Url.Action("index")", 2000)
+                            }
+                        }
+                    });
+                }
+            })
+        });
+    </script>
+
+    <script>
+        function openTab(evt, tabName) {
+            const tabContents = document.getElementsByClassName("tab-content");
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].style.display = "none";
+            }
+
+            const tabButtons = document.getElementsByClassName("tab-button");
+            for (let i = 0; i < tabButtons.length; i++) {
+                tabButtons[i].classList.remove("active");
+            }
+
+            // Seçilen sekme içeriğini göster
+            document.getElementById(tabName).style.display = "block";
+
+            evt.currentTarget.classList.add("active");
+        }
+    </script>
+}
+
+

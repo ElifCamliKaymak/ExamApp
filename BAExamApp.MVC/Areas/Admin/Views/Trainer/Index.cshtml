@@ -1,0 +1,121 @@
+﻿@model IEnumerable<AdminTrainerListVM>
+
+@{
+    ViewData["Title"] = ViewLocalizer["Trainers"];
+}
+
+<section class="section dashboard">
+    <div class="row">
+        <div class="card recent-sales overflow-auto">
+            <div class="card-body">
+               
+
+
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">@SharedLocalizer["List", SharedLocalizer["Trainer"]]</h5>
+                    <a class="btn btn-primary my-4 col-lg-2" style="width:185px" data-bs-toggle="modal" data-bs-target="#trainerCreate">@SharedLocalizer["Create", SharedLocalizer["Trainer"]]</a>
+                </div>
+               
+
+                @if (ViewBag.ShowAllData == true)
+                {
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="showInactiveCheckbox" onchange="toggleData(this.checked)" checked>
+                        <label class="form-check-label" for="showInactiveCheckbox">
+                            @ViewLocalizer["Trainer_Show_All"]
+                        </label>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="showInactiveCheckbox" onchange="toggleData(this.checked)">
+                        <label class="form-check-label" for="showInactiveCheckbox">
+                            @ViewLocalizer["Trainer_Show_All"]
+                        </label>
+                        
+                    </div>
+                }
+                               
+                <table class="table table-row-bordered datatable">
+                    <thead>
+                        <tr class="text-center">
+                            <th class="text-center fw-bold text-white" style="background-color:rgb(134,138,155)">@ViewLocalizer["Profile_Picture"]</th>
+                            <th class="text-center fw-bold text-white" style="background-color:rgb(134,138,155)">@ViewLocalizer["Trainer_Name"]</th>
+                            <th class="text-center fw-bold text-white" style="background-color: rgb(134,138,155)">@ViewLocalizer["Trainer_Surname"]</th>
+                            <th class="text-center fw-bold text-white" style="background-color: rgb(134,138,155)">@ViewLocalizer["Trainer_Mail_Adress"]</th>
+                            <th class="text-center fw-bold text-white" style="background-color: rgb(134,138,155)">@ViewLocalizer["Trainer_Modified_Date"]</th>
+                            <th class="text-center fw-bold text-white" style="background-color: rgb(134,138,155)">@ViewLocalizer["Trainer_Operations"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var trainer in Model)
+                        {
+                            <tr>
+                                @if (trainer.Image != null)
+                                {
+                                    <td class="categories text-center"><img style="width: 100px;border-radius: 50%;height: 100px;" src="@(string.Format("data:image/jpeg;base64,{0}", trainer.Image))" /></td>
+                                }
+                                else
+                                {
+                                    <td class="categories text-center"><img style="width: 100px;border-radius: 50%;height: 100px;" src="~/images/blank-profile-picture.png" /></td>
+                                }
+                                <td class="categories text-center">
+                                    <a>
+                                        <span class="post_category">@trainer.FirstName</span>
+                                    </a>
+                                </td>
+                                <td class="categories text-center">
+                                    <a>
+                                        <span class="post_category">@trainer.LastName</span>
+                                    </a>
+                                </td>
+                                <td class="categories text-center">
+                                    <a>
+                                        <span class="post_category">@trainer.Email</span>
+                                    </a>
+                                </td>
+                                <td class="categories text-center">
+                                    <a>
+                                        <span class="post_category">@trainer.ModifiedDate.ToString("dd MMMM yyyy")</span>
+                                    </a>
+                                </td>
+                                <td class="employment text-center">
+                                    <div class="dropdown">
+                                        <button id="optionsButton1">@SharedLocalizer["Options"] <i class="fa-solid fa-chevron-down"></i></button>
+                                        <div class="dropdown-content">
+                                            <a asp-action="Details" asp-route-id="@trainer.Id">@SharedLocalizer["Details"]</a>
+                                            <a asp-action="Update" asp-route-id="@trainer.Id">@SharedLocalizer["Update"]</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/dataTable/~/js/main.js"></script>
+<script src="~/lib/student/js/simple-datatables.js"></script>
+
+<script>
+    var classroomCount = @Model.Count();
+    window.onload = function () {
+        paginationSetupDropdown(classroomCount);
+    }
+</script>
+
+<script>
+    function toggleData(checked) {
+        if (checked) {
+            window.location.href = "@Url.Action("Index", new { showAllData = true })";
+        } else {
+            window.location.href = "@Url.Action("Index")";
+        }
+    }
+</script>
+
+<partial name="~/Areas/Admin/Views/Trainer/Create.cshtml" model="new AdminTrainerCreateVM()"></partial>

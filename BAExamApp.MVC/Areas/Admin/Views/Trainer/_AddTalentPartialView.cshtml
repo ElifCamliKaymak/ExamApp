@@ -1,0 +1,16 @@
+﻿@model AdminTalentAddVM
+<form asp-action="AddTalent">
+	<div class="m-auto">
+		<div class="container">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div id="talents-container">
+				<div class="talent-input">
+					<div class="form-conrol col-md-12">
+						<input asp-for="Name" style="border: 2px solid black;" placeholder="Yetenek giriniz" class="form-control mt-5px" />
+						<label class="fs-6 fw-bold form-label mt-3"> (*) Eklemek istediğiniz yetenekleri virgül kullanarak çoklu ekleyebilirsiniz. (Örnek: .Net, Javascript, Dockers) </label>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</form>

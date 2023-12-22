@@ -1,0 +1,200 @@
+﻿@model TrainerExamCreateVM
+
+@{
+    ViewData["Title"] = @ViewLocalizer["Create_Exam"];
+}
+<head>
+    <link href="~/lib/trainer/css/addexamforstudent.css" rel="stylesheet" />
+</head>
+
+<div class="card">
+    <h2 class="page-title">@ViewLocalizer["Create_Exam"]</h2>
+    <div class="form-group">
+        <div class="card-wrapper">
+            <form asp-action="Create" asp-controller="Exam" asp-area="Trainer" method="post">
+                <div class="form-group-element">
+                    <label asp-for="ExamDateTime"></label>
+                    <i class="fa-solid fa-circle-info" title="@ViewLocalizer["Exam_Date_and_Time"]"></i>
+                    <input type="datetime-local" asp-for="ExamDateTime" asp-format="{0:yyyy-MM-ddTHH:mm}">
+                    <span asp-validation-for="ExamDateTime" class="text-danger"></span>
+                </div>
+                <div class="form-group-element">
+                    <label asp-for="ExamDuration"></label>
+                    <i class="fa-solid fa-circle-info" title="@ViewLocalizer["Exam_Duration"]"></i>
+                    <input type="time" asp-for="ExamDuration">
+                    <span asp-validation-for="ExamDuration" class="text-danger"></span>
+                </div>
+                <div class="form-group-element">
+                    <label asp-for="MaxScore"></label>
+                    <i class="fa-solid fa-circle-info" title="@ViewLocalizer["Name"]"></i>
+                    <input type="number" class="form-control form-control-solid" asp-for="MaxScore">
+                    <span asp-validation-for="MaxScore" class="text-danger"></span>
+                </div>
+                <div class="form-group-element">
+                    <label asp-for="BonusScore"></label>
+                    <i class="fa-solid fa-circle-info" title="@ViewLocalizer["Name"]"></i>
+                    <input type="number" class="form-control form-control-solid" asp-for="BonusScore">
+                    <span asp-validation-for="BonusScore" class="text-danger"></span>
+                </div>
+                <div class="form-group-element">
+                    <label asp-for="ExamType"></label>
+                    <i class="fa-solid fa-circle-info" title="@SharedLocalizer["Exam_Type"]"></i>
+                    <select asp-for="ExamType" onchange="onExamTypeChange()">
+                        <option value="" disabled selected>@SharedLocalizer["Choose"]</option>
+                        @foreach (SelectListItem examType in ViewBag.ExamTypes)
+                        {
+                            <option value="@examType.Value">@SharedLocalizer[$"{examType.Text}"]</option>
+                        }
+                    </select>
+                    <span asp-validation-for="ExamType" class="text-danger"></span>
+                </div>
+                <div class="form-group-element">
+                    <label asp-for="ExamRuleId"></label>
+                    <select asp-for="ExamRuleId">
+                        <option value="" disabled selected>@SharedLocalizer["Choose"]</option>
+                    </select>
+                    <span asp-validation-for="ExamRuleId" class="text-danger"> </span>
+                </div>
+                <div class="form-group-element">
+                    <label asp-for="ExamCreationType"></label>
+                    <i class="fa-solid fa-circle-info" title="@ViewLocalizer["Exam_Creation_Type"]"></i>
+                    <select asp-for="ExamCreationType" asp-items="@ViewBag.ExamCreationTypes">
+                        <option value="" disabled selected>@SharedLocalizer["Choose"]</option>
+                    </select>
+                    <span asp-validation-for="ExamCreationType" class="text-danger"></span>
+                </div>
+
+
+                <div class="card" id="studentclassroomcard">
+                    <div class="container">
+                        <div>
+                            <label for="ogrenci" id="ogrenciLabel">Öğrenciye Sınav Oluştur</label>
+                        </div>
+                        <div>
+                            <label class="switch">
+                                <input asp-for="forClassroom" type="checkbox" id="ogrenci" onchange="onSwitchChange()">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                        <div>
+                            <label for="sinif" id="sinifLabel">Sınıfa Sınav Oluştur</label>
+                        </div>
+                    </div>
+                    <div class="form-group-element" for="ClassroomId">
+                        <label asp-for="ExamClassroomsIds">Sınıf</label>
+                        <select asp-for="ExamClassroomsIds" asp-items="@ViewBag.ClassroomList" class="form-control select2-multiple" multiple>
+                        </select>
+                        <span asp-validation-for="ExamClassroomsIds" class="text-danger"></span>
+                    </div>
+                    <br />
+                    <div id="studentArea">
+                        <div class="form-group-element">
+                            <label asp-for="StudentIds">Öğrenciler</label>
+                            <select asp-for="StudentIds" class="form-control select2-multiple" id="studentSelect" multiple>
+                            </select>
+                            <span asp-validation-for="StudentIds" class="text-danger"></span>
+                        </div>
+                        <div class="form-group-element">
+                            <label asp-for="Description">Açıklama</label>
+                            <textarea asp-for="Description" class="form-control"></textarea>
+                            <span asp-validation-for="Description" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-cancel" type="reset" data-kt-contacts-type="cancel">@SharedLocalizer["Cancel"]</a>
+                    <button type="submit" data-kt-contacts-type="submit" class="btn btn-save">@SharedLocalizer["Save"]</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+    <script src="~/js/jquery.min.js"></script>
+    <script src="~/js/select2.js"></script>
+    <script src="~/lib/trainer/js/createexamforstudent.js"></script>
+    <script>
+        $(document).ready(function () {
+
+    $('#studentSelect').select2({
+        placeholder: "@SharedLocalizer["Select_Student"]",
+        allowClear: true
+    });
+    $('#ExamClassroomsIds').select2({
+        placeholder: "@SharedLocalizer["Select_Classroom"]",
+        allowClear: true
+    });
+
+    var classroomStudents = {};
+    var selectedStudents = [];
+
+    $('#ExamClassroomsIds').on('change', function () {
+        var selectedClassrooms = $(this).val();
+
+        selectedStudents = $('#studentSelect').val() || [];
+
+        var allStudents = [];
+        selectedClassrooms.forEach(function (classroomId) {
+            if (classroomStudents[classroomId]) {
+                allStudents = allStudents.concat(classroomStudents[classroomId]);
+            } else {
+                $.ajax({
+                    url: '/Trainer/Exam/GetStudentsByClassroom',
+                    type: 'GET',
+                    data: { classroomId: classroomId },
+                    success: function (students) {
+                        classroomStudents[classroomId] = students;
+                        allStudents = allStudents.concat(students);
+                        updateStudentSelect(allStudents);
+                    }
+                });
+            }
+        });
+
+        updateStudentSelect(allStudents);
+    });
+
+    function updateStudentSelect(students) {
+        var studentSelect = $('#studentSelect');
+        studentSelect.empty();
+
+        students.forEach(function (student) {
+            var isSelected = selectedStudents.indexOf(student.value) > -1;
+            var newOption = new Option(student.text, student.value, isSelected, isSelected);
+            studentSelect.append(newOption);
+        });
+
+        studentSelect.trigger('change');
+    }
+
+    var switchElement = $("#ogrenci");
+    var studentArea = $("#studentArea");
+    var ogrenciLabel = $("#ogrenciLabel");
+    var sinifLabel = $("#sinifLabel");
+
+    switchElement.on('change', function () {
+        if ($(this).is(':checked')) {
+            studentArea.hide();
+            sinifLabel.css('font-weight', 'bold');
+            ogrenciLabel.css('font-weight', 'normal');
+        } else {
+            studentArea.show();
+            ogrenciLabel.css('font-weight', 'bold');
+            sinifLabel.css('font-weight', 'normal');
+        }
+    });
+
+    if (switchElement.is(':checked')) {
+        studentArea.hide();
+        sinifLabel.css('font-weight', 'bold');
+        ogrenciLabel.css('font-weight', 'normal');
+    } else {
+        studentArea.show();
+        ogrenciLabel.css('font-weight', 'bold');
+        sinifLabel.css('font-weight', 'normal');
+    }
+});
+    </script>
+}
+

@@ -1,0 +1,666 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="Actions" xml:space="preserve">
+    <value>Actions</value>
+  </data>
+  <data name="Approve_Success" xml:space="preserve">
+    <value>Question Approved</value>
+  </data>
+  <data name="Add_New_Rule" xml:space="preserve">
+    <value>Add New Rule</value>
+  </data>
+  <data name="Back_List" xml:space="preserve">
+    <value>Back to List</value>
+  </data>
+  <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="City" xml:space="preserve">
+    <value>City</value>
+  </data>
+  <data name="Create_Exam_Rule" xml:space="preserve">
+    <value>Create Exam Rule</value>
+  </data>
+  <data name="Create_Question" xml:space="preserve">
+    <value>Create Question</value>
+  </data>
+  <data name="Do_Not_Enter_Same_Exam_Rule" xml:space="preserve">
+    <value>Please do not enter the same exam rule twice.</value>
+  </data>
+  <data name="Enter_The_Name_Of_The _Training" xml:space="preserve">
+    <value>Enter The Name Of The  Training</value>
+  </data>
+  <data name="Exam_Rule_List" xml:space="preserve">
+    <value>Exam Rule List</value>
+  </data>
+  <data name="Exam_Rule_Name" xml:space="preserve">
+    <value>Exam Rule Name</value>
+  </data>
+  <data name="My_Exam_Tasks" xml:space="preserve">
+    <value>My Exam Tasks</value>
+  </data>
+  <data name="Name" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="Reject_Success" xml:space="preserve">
+    <value>Question Rejected</value>
+  </data>
+  <data name="Review_Success" xml:space="preserve">
+    <value>Question Reviewed</value>
+  </data>
+  <data name="Question_Count" xml:space="preserve">
+    <value>Question Count</value>
+  </data>
+  <data name="Rule" xml:space="preserve">
+    <value>Rule</value>
+  </data>
+  <data name="Select_City" xml:space="preserve">
+    <value>Select City</value>
+  </data>
+  <data name="Select_Subject" xml:space="preserve">
+    <value>Select Subject</value>
+  </data>
+  <data name="Subject_List" xml:space="preserve">
+    <value>Subject List</value>
+  </data>
+  <data name="Subject_Name" xml:space="preserve">
+    <value>Subject Name</value>
+  </data>
+  <data name="TechnicalUnit_Id" xml:space="preserve">
+    <value>Technical Unit Id</value>
+  </data>
+  <data name="TechnicalUnit_List" xml:space="preserve">
+    <value>Technical Unit List</value>
+  </data>
+  <data name="TechnicalUnit_Name" xml:space="preserve">
+    <value>Technical Unit Name</value>
+  </data>
+  <data name="Trainer_Name" xml:space="preserve">
+    <value>Trainer Name</value>
+  </data>
+  <data name="Transactions" xml:space="preserve">
+    <value>Transactions</value>
+  </data>
+  <data name="Update_Exam_Rule" xml:space="preserve">
+    <value>Update Exam Rule</value>
+  </data>
+  <data name="Products" xml:space="preserve">
+    <value>Products</value>
+  </data>
+  <data name="Image_File_Type" xml:space="preserve">
+    <value>JPEG or PNG</value>
+  </data>
+  <data name="Options" xml:space="preserve">
+    <value>Options</value>
+  </data>
+  <data name="Product_Created_Date" xml:space="preserve">
+    <value>Product Created Date</value>
+  </data>
+  <data name="Full_Name" xml:space="preserve">
+    <value>Name Surname</value>
+  </data>
+  <data name="Updated_Date" xml:space="preserve">
+    <value>Updated Date</value>
+  </data>
+  <data name="Active_Products" xml:space="preserve">
+    <value>Active Products</value>
+  </data>
+  <data name="All_Products" xml:space="preserve">
+    <value>All Products</value>
+  </data>
+  <data name="Passive_Products" xml:space="preserve">
+    <value>Passive Products,</value>
+  </data>
+  <data name="BranchIsNull" xml:space="preserve">
+    <value>Branch Information is unavailable.</value>
+  </data>
+  <data name="IsActiveFalse" xml:space="preserve">
+    <value>Passive</value>
+  </data>
+  <data name="IsActiveNull" xml:space="preserve">
+    <value>Activity Information is unavailable.</value>
+  </data>
+  <data name="IsActiveTrue" xml:space="preserve">
+    <value>Active</value>
+  </data>
+  <data name="Student_Count" xml:space="preserve">
+    <value>Student Count</value>
+  </data>
+  <data name="Exams" xml:space="preserve">
+    <value>Exams</value>
+  </data>
+  <data name="Current" xml:space="preserve">
+    <value>Current</value>
+  </data>
+  <data name="Date" xml:space="preserve">
+    <value>Date</value>
+  </data>
+  <data name="Exam_Time" xml:space="preserve">
+    <value>Exam Time</value>
+  </data>
+  <data name="Future" xml:space="preserve">
+    <value>Future</value>
+  </data>
+  <data name="Name_Of_The_Exam" xml:space="preserve">
+    <value>Name Of The Exam</value>
+  </data>
+  <data name="Past" xml:space="preserve">
+    <value>Past</value>
+  </data>
+  <data name="Take_The_Exam" xml:space="preserve">
+    <value>Take The Exam</value>
+  </data>
+  <data name="Not_Examined" xml:space="preserve">
+    <value>Not Examined</value>
+  </data>
+  <data name="Score" xml:space="preserve">
+    <value>Score</value>
+  </data>
+  <data name="Choose_Branch" xml:space="preserve">
+    <value>Choose Branch</value>
+  </data>
+  <data name="The_Exam_Time_Is_Up" xml:space="preserve">
+    <value>The Exam Time is Up</value>
+  </data>
+  <data name="You_Dont_Have_An_Exam_Yet" xml:space="preserve">
+    <value>You Don't Have An Exam Yet</value>
+  </data>
+  <data name="Exams_Evaluators_Name" xml:space="preserve">
+    <value>Name of Exam Evaluator</value>
+  </data>
+  <data name="String" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Back" xml:space="preserve">
+    <value>Geri</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="IsNotModified" xml:space="preserve">
+    <value>Not Modified</value>
+  </data>
+  <data name="Choose_Picture" xml:space="preserve">
+    <value>Choose Picture</value>
+  </data>
+  <data name="Picture_Format_Error" xml:space="preserve">
+    <value>File not uploaded! Please upload a valid image file (JPG, JPEG or PNG).</value>
+  </data>
+  <data name="Remove_Profile_Picture" xml:space="preserve">
+    <value>Remove Profile Picture</value>
+  </data>
+  <data name="Upload_Profile_Picture" xml:space="preserve">
+    <value>Upload Profile Picture</value>
+  </data>
+  <data name="Practice_Question" xml:space="preserve">
+    <value>Practice Question</value>
+  </data>
+  <data name="Documentation" xml:space="preserve">
+    <value>Documentation</value>
+  </data>
+  <data name="Cancel_Profile_Picture" xml:space="preserve">
+    <value>Return to previous profile picture</value>
+  </data>
+  <data name="Compile" xml:space="preserve">
+    <value>Compile</value>
+  </data>
+  <data name="Fill_Blank" xml:space="preserve">
+    <value>Fill Blank</value>
+  </data>
+  <data name="True_False" xml:space="preserve">
+    <value>True False</value>
+  </data>
+  <data name="My_Unfinished_Exam_Tasks" xml:space="preserve">
+    <value>My Unfinished Exam Tasks</value>
+  </data>
+  <data name="Evaluate" xml:space="preserve">
+    <value>Evaluate</value>
+  </data>
+  <data name="Evaluate_Exam" xml:space="preserve">
+    <value>Evaluate Exam</value>
+  </data>
+  <data name="Student_Name" xml:space="preserve">
+    <value>Student Name</value>
+  </data>
+  <data name="Exam_Name" xml:space="preserve">
+    <value>Exam Name</value>
+  </data>
+  <data name="Exam_State" xml:space="preserve">
+    <value>Exam State</value>
+  </data>
+  <data name="Student_Score" xml:space="preserve">
+    <value>Student Score</value>
+  </data>
+  <data name="Student_Take_To_Exam" xml:space="preserve">
+    <value>Is Student Take To Exam?</value>
+  </data>
+  <data name="Exam_Details" xml:space="preserve">
+    <value>Exam Details</value>
+  </data>
+  <data name="Answer_True" xml:space="preserve">
+    <value>True</value>
+  </data>
+  <data name="Answer_False" xml:space="preserve">
+    <value>False</value>
+  </data>
+  <data name="Evaluating_Exam" xml:space="preserve">
+    <value>Evaluating Exam</value>
+  </data>
+  <data name="Student_Answer" xml:space="preserve">
+    <value>Answer</value>
+  </data>
+  <data name="Answer_of_Student" xml:space="preserve">
+    <value>Answer</value>
+  </data>
+  <data name="Student_Question_Point" xml:space="preserve">
+    <value>Student Question Point</value>
+  </data>
+  <data name="Classroom_Members" xml:space="preserve">
+    <value>Classroom Members</value>
+  </data>
+  <data name="Exam_Attendance_Status" xml:space="preserve">
+    <value>Exam Attendance Status</value>
+  </data>
+  <data name="Joined" xml:space="preserve">
+    <value>Joined</value>
+  </data>
+  <data name="Not_Joined" xml:space="preserve">
+    <value>Not Joined</value>
+  </data>
+  <data name="Cities" xml:space="preserve">
+    <value>Cities</value>
+  </data>
+  <data name="Classrooms" xml:space="preserve">
+    <value>Classrooms</value>
+  </data>
+  <data name="Version" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="Version_List" xml:space="preserve">
+    <value>Version List</value>
+  </data>
+  <data name="Add_Other_Email" xml:space="preserve">
+    <value>Add_Other_Email</value>
+  </data>
+  <data name="Create_New_Classroom" xml:space="preserve">
+    <value>Create New Classroom</value>
+  </data>
+  <data name="Please_Add_Questions_Before" xml:space="preserve">
+    <value>Please Add Questions Before</value>
+  </data>
+  <data name="Exam_Creation_Type" xml:space="preserve">
+    <value>Exam Creation Type</value>
+  </data>
+  <data name="Subtopic" xml:space="preserve">
+    <value>Subtopic</value>
+  </data>
+  <data name="Create_New_Subtopic" xml:space="preserve">
+    <value>Create New Subtopic</value>
+  </data>
+  <data name="Subtopic_Operations" xml:space="preserve">
+    <value>Subtopic Operations</value>
+  </data>
+  <data name="Subtopic_Detail" xml:space="preserve">
+    <value>Subtopic Detail</value>
+  </data>
+  <data name="Subtopic_Subject" xml:space="preserve">
+    <value>Subtopics Subject</value>
+  </data>
+  <data name="Subtopic_Update" xml:space="preserve">
+    <value>Subtopic Update</value>
+  </data>
+  <data name="Add_Exam_Rule_Subject" xml:space="preserve">
+    <value>Add at least 1 Rule</value>
+  </data>
+  <data name="Question_Difficulty" xml:space="preserve">
+    <value>Quesition Difficulty</value>
+  </data>
+  <data name="QuesitionDifficulty_Time" xml:space="preserve">
+    <value>Quesition Difficulty Time</value>
+  </data>
+  <data name="Fill_All_Inputs" xml:space="preserve">
+    <value>Fill All Inputs</value>
+  </data>
+  <data name="Same_Rule_Exists" xml:space="preserve">
+    <value>Same Rule Exists</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="Add_At_Least_One_Answer" xml:space="preserve">
+    <value>Add At Least One Answer</value>
+  </data>
+  <data name="Add_Instructor" xml:space="preserve">
+    <value>Add Instructor</value>
+  </data>
+  <data name="Question_Type" xml:space="preserve">
+    <value>Question Type</value>
+  </data>
+  <data name="Time_Given" xml:space="preserve">
+    <value>Time Given</value>
+  </data>
+  <data name="Request_Description" xml:space="preserve">
+    <value>Request Description</value>
+  </data>
+  <data name="Question_Image" xml:space="preserve">
+    <value>Question Image</value>
+  </data>
+  <data name="Question_Answers" xml:space="preserve">
+    <value>Question Answers</value>
+  </data>
+  <data name="Product_List" xml:space="preserve">
+    <value>Product List</value>
+  </data>
+  <data name="Still_Active" xml:space="preserve">
+    <value>Still Active</value>
+  </data>
+  <data name="Score_List_By_Exam" xml:space="preserve">
+    <value>Score List By Exam</value>
+  </data>
+  <data name="Exam_Results" xml:space="preserve">
+    <value>Exam Results</value>
+  </data>
+  <data name="Reviewed_List" xml:space="preserve">
+    <value>Revised List Of Requested {0}</value>
+  </data>
+  <data name="Exam_Date_Time" xml:space="preserve">
+    <value>Exam Date Time</value>
+  </data>
+  <data name="Exam_Not_Found" xml:space="preserve">
+    <value>Exam Not Found</value>
+  </data>
+  <data name="Exam_Not_Started" xml:space="preserve">
+    <value>Exam Not Started</value>
+  </data>
+  <data name="Next_Question" xml:space="preserve">
+    <value>Next Question</value>
+  </data>
+  <data name="Please_Do_Not_Leave_Reject_Text_Blank" xml:space="preserve">
+    <value>Please Do Not Leave Reject Text Blank</value>
+  </data>
+  <data name="Reject_Comment" xml:space="preserve">
+    <value>Reject Comment</value>
+  </data>
+  <data name="Score_Coefficient" xml:space="preserve">
+    <value>Score Coefficient</value>
+  </data>
+  <data name="Max_Score" xml:space="preserve">
+    <value>Maximum Score</value>
+  </data>
+  <data name="Bonus_Score" xml:space="preserve">
+    <value>Bonus Score</value>
+  </data>
+  <data name="Question_CompletionDate" xml:space="preserve">
+    <value>Question Completion Date</value>
+  </data>
+  <data name="Question_RequestDate" xml:space="preserve">
+    <value>Question Request Date</value>
+  </data>
+  <data name="Approved_Date" xml:space="preserve">
+    <value>Approved Date</value>
+  </data>
+  <data name="Rejected_Date" xml:space="preserve">
+    <value>Rejected Date</value>
+  </data>
+  <data name="Review_Request_Date" xml:space="preserve">
+    <value>Review Request Date</value>
+  </data>
+  <data name="Test_Request_Date" xml:space="preserve">
+    <value>Test Request Date</value>
+  </data>
+  <data name="Exam_Score" xml:space="preserve">
+    <value>Exam Score</value>
+  </data>
+  <data name="Classroom" xml:space="preserve">
+    <value>Classroom</value>
+  </data>
+  <data name="Remaining_Time_For_The_Exam_To_Start" xml:space="preserve">
+    <value>Remaining Time For The Exam To Start</value>
+  </data>
+  <data name="Exam_Operations" xml:space="preserve">
+    <value>Exam Operations</value>
+  </data>
+  <data name="Add_Evaluators" xml:space="preserve">
+    <value>Add Evaluators</value>
+  </data>
+  <data name="Ongoing_Exams" xml:space="preserve">
+    <value>Ongoing Exams</value>
+  </data>
+  <data name="Past_Exams" xml:space="preserve">
+    <value>Past Exams</value>
+  </data>
+  <data name="Upcoming_Exams" xml:space="preserve">
+    <value>Upcoming Exams</value>
+  </data>
+  <data name="All_Exams_List" xml:space="preserve">
+    <value>All Exams List</value>
+  </data>
+  <data name="Ongoing_Exams_List" xml:space="preserve">
+    <value>Ongoing Exams List</value>
+  </data>
+  <data name="Past_Exams_List" xml:space="preserve">
+    <value>Past Exams List</value>
+  </data>
+  <data name="Upcoming_Exams_List" xml:space="preserve">
+    <value>Upcoming Exams List</value>
+  </data>
+  <data name="Download" xml:space="preserve">
+    <value>Download</value>
+  </data>
+  <data name="Excel" xml:space="preserve">
+    <value>Excel</value>
+  </data>
+  <data name="Question_Answer" xml:space="preserve">
+    <value>Answer</value>
+  </data>
+  <data name="Question_IsRightAnswer" xml:space="preserve">
+    <value>Is Right Answer</value>
+  </data>
+  <data name="Show_Data" xml:space="preserve">
+    <value>Show Data</value>
+  </data>
+  <data name="Upload" xml:space="preserve">
+    <value>Upload</value>
+  </data>
+  <data name="There_May_Be_More_Than_One_Answer_To_this_Question" xml:space="preserve">
+    <value>There may be more than one answer to this question.</value>
+  </data>
+  <data name="This_Question_Is_An_Ongoing_Selected_Question" xml:space="preserve">
+    <value>This question is an ongoing selected question.</value>
+  </data>
+  <data name="Hour" xml:space="preserve">
+    <value>Hour</value>
+  </data>
+  <data name="Minute" xml:space="preserve">
+    <value>Minute</value>
+  </data>
+  <data name="Second" xml:space="preserve">
+    <value>Second</value>
+  </data>
+  <data name="The_Student_Does_Not_Have_Any_Exams" xml:space="preserve">
+    <value>The Student Does Not Have Any Exams</value>
+  </data>
+  <data name="Did_Not_Take_The_Exam" xml:space="preserve">
+    <value>Did Not Take The Exam</value>
+  </data>
+  <data name="Finish_Exam" xml:space="preserve">
+    <value>Finish Exam</value>
+  </data>
+  <data name="Exam_Duration" xml:space="preserve">
+    <value>Exam Duration (hour : minute)</value>
+  </data>
+  <data name="Classroom_Filter_Warning" xml:space="preserve">
+    <value>You can filter the item using the filtering tools below with the "Search" button. If you want to display the entire class list, you can check the checkbox and filter with the "Search" button.</value>
+  </data>
+  <data name="Get_Student" xml:space="preserve">
+    <value>Get Student</value>
+  </data>
+  <data name="Student_Mail_Adress" xml:space="preserve">
+    <value>Student Mail Adress</value>
+  </data>
+  <data name="Student_Surname" xml:space="preserve">
+    <value>Student Surname</value>
+  </data>
+  <data name="Next_Rule" xml:space="preserve">
+    <value>Next Rule</value>
+  </data>
+  <data name="Exam_Rule_Description" xml:space="preserve">
+    <value>Exam Rule Description</value>
+  </data>
+  <data name="Exam_Filter_Warning" xml:space="preserve">
+    <value>You can filter the item using the filtering tools below with the "Search" button. If you want to display the entire exam list, you can check the checkbox and filter with the "Search" button.</value>
+  </data>
+  <data name="List_All_Students" xml:space="preserve">
+    <value>List All Students</value>
+  </data>
+  <data name="Student_Filter_Warning" xml:space="preserve">
+    <value>Enter the name, surname or e-mail address of the student you want to search and click on the "Get Student" button. To list all students, click on the "List All Students" box and click on the "Get Student" button.</value>
+  </data>
+  <data name="Multiple_Choice" xml:space="preserve">
+    <value>Multiple Choice</value>
+  </data>
+  <data name="Test" xml:space="preserve">
+    <value>Test</value>
+  </data>
+  <data name="Text_Answered_Question" xml:space="preserve">
+    <value>Text Answered Question</value>
+  </data>
+  <data name="Missed_Exam_Excuse_Information" xml:space="preserve">
+    <value>Missed Exam Excuse Information</value>
+  </data>
+  <data name="Exam_Type" xml:space="preserve">
+    <value>Exam Type</value>
+  </data>
+  <data name="Standard_Exam" xml:space="preserve">
+    <value>Standard Exam</value>
+  </data>
+  <data name="Zahoot_Exam" xml:space="preserve">
+    <value>Zahoot Exam</value>
+  </data>
+  <data name="Class_Grade_Average" xml:space="preserve">
+    <value>Class Grade Average</value>
+  </data>
+  <data name="Select_Classroom" xml:space="preserve">
+    <value>Select one or more classrooms</value>
+  </data>
+  <data name="Select_Student" xml:space="preserve">
+    <value>Select one or more students</value>
+  </data>
+</root>

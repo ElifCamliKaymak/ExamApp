@@ -1,0 +1,54 @@
+﻿@model IEnumerable<TrainerExamListVM>
+
+@{
+    Layout = "_Layout";
+}
+
+<div class="table-container">
+    <h2 class="page-title">@ViewLocalizer["All_Exam_List"]</h2>
+    <table class="datatable">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Name)</th>
+                <th>@Html.DisplayNameFor(model => model.ExamDateTime)</th>
+                <th>@Html.DisplayNameFor(model => model.ExamDuration)</th>
+                <th>@Html.DisplayNameFor(model => model.ClassroomName)</th>
+                <th>@SharedLocalizer["Transactions"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Any())
+            {
+                foreach (var exam in Model)
+                {
+                    <tr>
+                        <td>@exam.Name</td>
+                        <td>@exam.ExamDateTime</td>
+                        <td>@exam.ExamDuration</td>
+                        <td>@exam.ClassroomName</td>
+                        <td>
+                            <div class="optionsdropdown">
+                                <button class="btn-details" onclick="toggleDropdown('optionsdropdownMenu-@exam.Id')">@SharedLocalizer["Options"] <i class="fa-solid fa-caret-down"></i></button>
+                                <div class="options-dropdown-menu" id="optionsdropdownMenu-@exam.Id">
+                                    <a asp-action="Details" asp-route-id="@exam.Id">@SharedLocalizer["Details"]</a>
+                                    <a class="btn-details1" onclick="deleteExam('@exam.Id')">@SharedLocalizer["Delete"]</a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td>@ViewLocalizer["No_Data_To_List"]</td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+
+
+

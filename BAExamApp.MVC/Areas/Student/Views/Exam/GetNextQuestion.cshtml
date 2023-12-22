@@ -1,0 +1,163 @@
+﻿@model StudentStudentQuestionDetailsVM
+
+@{
+    ViewData["Title"] = SharedLocalizer["Exam"];
+    Layout = "";
+    var answerOrder = 1;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>@ViewData["Title"]</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link href="~/css/student-question.css" rel="stylesheet" />
+</head>
+<body>
+    <main>
+        <form method="post" >
+            <input asp-for="QuestionAnswers" hidden />
+            <input asp-for="QuestionCount" hidden />
+            <input asp-for="StudentQuestionId" hidden />
+            <input asp-for="TimeGiven" hidden />
+            <input asp-for="TimeStarted" hidden />
+          
+            <div class="row" style="width:97%">
+                <div class=" d-flex justify-content-end mt-3 me-3" style="font-weight: bold; color: #414b59; font-size: 1.4em;" id="remainingTime"></div>
+            </div>
+            <br>
+            <br>
+            <div class="container position-absolute top-0 start-0">
+                <div class="row">
+                    <div id="questionCounterMain" class="col-3 p-2" style="font-weight: bold; margin:10px; color: #414b59; font-size: 1.4em;">
+                        <span id="questionCounterText"></span>
+                        <span id="questionCounter"></span>
+                    </div>
+
+                    <div id="transitionCounterMain" class="col-3 p-2" style="width: 800px; height: 40px; margin:10px; font-weight: bold; color: #414b59; font-size: 1.4em;">
+                        <span id="transitionCounter"></span>
+                        <span id="transitionCounterText"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="container position-absolute top-0 start-50">
+                <div class="row">
+                    <div class="col-3 p-2">
+                        <span class="text-success fs-2">@SharedLocalizer["Question"] @Model.QuestionOrder</span>
+                    </div>
+                </div>
+            </div>
+            <div class="container position-absolute top-50 start-50 translate-middle">
+                <div class="row">
+                    <div class="col-12 p-2 image-container">
+                        @if (Model.Image != null)
+                        {
+                            <a class="onizleme" href="#thumb">
+                                <img class="question-image" id="questionImage" src="data:image/png;base64,@(Model.Image)" />
+                                <span>
+                                    <img id="yanresim" runat="server" alt="büyükresim" src="data:image/png;base64,@(Model.Image)" />
+                                </span>
+                            </a>
+                        }
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 p-2">
+                        @if (Model.QuestionType == QuestionType.MultipleAnswer)
+                        {
+                            <span class="text-primary"><b>[@SharedLocalizer["There_May_Be_More_Than_One_Answer_To_this_Question"]]</b></span>
+                        }
+                        else if (Model.QuestionType == QuestionType.Test)
+                        {
+                            <span class="text-primary"><b>[@SharedLocalizer["This_Question_Is_An_Ongoing_Selected_Question"]]</b></span>
+                        }
+                        <br />
+                        <br />
+                        <span>@Model.Content</span>
+                    </div>
+                </div>
+                <input class="form-control" name="studentAnswers" id="studentAnswers" hidden />
+                <div class="form-check form-check-inline mt-5">
+                    @foreach (var answer in Model.QuestionAnswers)
+                    {
+                        <div class="form-check form-check p-2">
+                            @if (Model.QuestionType == QuestionType.MultipleAnswer)
+                            {
+                                <input class="form-check-input choices" type="checkbox" name="answerOptions" id="answer-@answerOrder" value="@answer.Id" onChange="updateStudentAnswers()">
+                            }
+                            else
+                            {
+                                <input class="form-check-input choices" type="radio" name="answerOptions" id="answer-@answerOrder" value="@answer.Id" onChange="updateStudentAnswers()">
+                            }
+                            <label class="form-check-label" for="answer-@answerOrder">@answer.Answer</label>
+                        </div>
+                        answerOrder++;
+                    }
+                </div>
+                <div class="row">
+                    <div class="col p-2 float-end">
+                        @if (Model.QuestionCount == Model.QuestionOrder)
+                        {
+                            <button id="next-question-button" class="btn btn-primary float-end">@SharedLocalizer["Finish_Exam"]</button>
+                        }
+                        else
+                        {
+                            <button id="next-question-button" class="btn btn-primary float-end">@SharedLocalizer["Next_Question"]</button>
+                        }
+                    </div>
+                </div>
+            </div>
+        </form>
+    </main>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/student-question.js"></script>
+    <script>
+        var examDateTime = new Date('@Model.ExamDateTime.ToString("yyyy-MM-ddTHH:mm:ss")');
+        var examDurationMilliseconds = @Model.ExamDuration.TotalMilliseconds;
+        var examDurationTime = new Date(examDateTime.getTime() + examDurationMilliseconds);
+
+        function updateRemainingTime() {
+            var currentTime = new Date();
+            var timeDifference = examDateTime.getTime() + examDurationMilliseconds - currentTime.getTime();
+
+            if (timeDifference <= 0) {
+                document.getElementById("remainingTime").innerHTML = "Sorununun Süresi Tamamlandığında, Rapor Ekranına Gidilecektir...";
+                //window.location.href = '@Url.Action("GetExamResult", "Exam")';
+                return;
+            }
+
+            var hours = Math.floor(timeDifference / (1000 * 60 * 60));
+            var minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+            var remainingTimeMessage = '<span style="font-weight: bold; color: #414b59;"> Sınavın Bitişine Kalan Süre: &nbsp</span>';
+
+            if (hours > 0) {
+                remainingTimeMessage += hours + " : ";
+            }
+            if (minutes < 10) {
+                minutes = "0" + minutes;
+            }
+            if (seconds < 10) {
+                seconds = "0" + seconds;
+            }
+            remainingTimeMessage += minutes + " : " + seconds;
+            document.getElementById("remainingTime").innerHTML = remainingTimeMessage;
+        }
+
+        setInterval(updateRemainingTime, 1000);
+
+        updateRemainingTime();
+     
+    </script>
+    <script>
+        var questionCount = @Model.QuestionCount;
+        var currentQuestionOrder = @Model.QuestionOrder; 
+    </script>
+</body>
+</html>

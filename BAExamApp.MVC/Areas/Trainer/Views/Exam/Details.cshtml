@@ -1,0 +1,46 @@
+﻿@model TrainerExamDetailVM
+
+@{
+    ViewData["Title"] = ViewLocalizer["Exam_Detail"];
+}
+<div class="card">
+    <h2 class="page-title"> @ViewLocalizer["Exam_Detail"]</h2>
+    <div class="card-wrapper">
+        <div class="card-group-element">
+            <label>@Html.DisplayNameFor(model => model.Name) :</label>
+            <span>@Model.Name</span>
+        </div>
+        <div class="card-group-element">
+            <label>@Html.DisplayNameFor(model => model.ExamDuration) :</label>
+            <span>@Model.ExamDuration</span>
+        </div>
+        <div class="card-group-element">
+            <label>@Html.DisplayNameFor(model => model.ExamDateTime) :</label>
+            <span>@Model.ExamDateTime</span>
+        </div>
+        <div class="card-group-element">
+            <label>@Html.DisplayNameFor(model => model.MaxScore) :</label>
+            <span>@Model.MaxScore</span>
+        </div>
+        <div class="card-group-element">
+            <label>@Html.DisplayNameFor(model => model.BonusScore) :</label>
+            <span>@Model.BonusScore</span>
+        </div>
+        <div class="card-group-element">
+            <label>@ViewLocalizer["Exam_Rule_Name"] :</label>
+            <span> @Model.ExamRuleName</span>
+        </div>
+        <div class="card-group-element">
+            <label>@SharedLocalizer["Classroom_Name"] :</label>
+            <span> @Model.ClassroomName</span>
+        </div> 
+        <div class="form-actions">
+            <a class="btn btn-cancel" type="button" asp-controller="Exam" asp-action="Index">
+                @SharedLocalizer["Back_List"]
+            </a>
+        </div>
+    </div>
+</div>
+
+
+

@@ -1,0 +1,66 @@
+﻿@model IEnumerable<AdminExamRuleListVM>
+
+@{
+    ViewData["Title"] = SharedLocalizer["List", SharedLocalizer["Exam_Rule_List"]];
+    bool toggleStateRule = ViewBag.ToggleState ?? false;
+}
+<section class="section dashboard">
+    <div class="row">
+        <div class="card recent-sales overflow-auto">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">@SharedLocalizer["List", SharedLocalizer["Exam_Rule"]]</h5>
+                    <a class="btn btn-primary my-4 col-lg-2" style="width:185px" data-bs-toggle="modal" data-bs-target="#createExamRuleModal">@SharedLocalizer["Create", SharedLocalizer["Exam_Rule"]]</a>
+                </div>
+
+                <table class="table table-row-bordered datatable">
+                    <thead>
+                        <tr class="text-center">
+                            <th class="text-center fw-bold text-white" style="background-color:rgb(134,138,155)">@Html.DisplayNameFor(model => model.Name)</th>
+                            <th class="text-center fw-bold text-white " style="background-color: rgb(134,138,155)">@SharedLocalizer["Actions"]</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var examRule in Model)
+                        {
+                            <tr>
+                                <td class="categories text-center">
+                                    <a>
+                                        <span class="post_category">@examRule.Name</span>
+                                    </a>
+                                </td>
+                                <td class="employment text-center">
+                                    <div class="dropdown">
+                                        <button id="optionsButton1">@SharedLocalizer["Options"] <i class="fa-solid fa-chevron-down"></i></button>
+                                        <div class="dropdown-content">
+                                            <a asp-action="Details" asp-controller="ExamRule" asp-route-id="@examRule.Id">@SharedLocalizer["Details"]</a>
+                                            <a asp-action="Update" asp-controller="ExamRule" asp-route-id="@examRule.Id">@SharedLocalizer["Update"]</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<partial name="~/Areas/Admin/Views/ExamRule/CreatePartialView.cshtml" model="new AdminExamRuleCreateVM()"></partial>
+<script src="~/lib/student/js/simple-datatables.js"></script>
+
+<script src="~/dataTable/~/js/main.js"></script>
+<script>
+    var classroomCount = @Model.Count();
+    window.onload = function () {
+        paginationSetupDropdown(classroomCount);
+    }
+</script>
+
+
+
+
+

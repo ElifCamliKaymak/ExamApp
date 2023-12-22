@@ -1,0 +1,186 @@
+﻿@model AdminAdminCreateVM
+
+@{
+    ViewData["Title"] = ViewLocalizer["Create_New"];
+}
+
+
+<div class="modal fade bd-example-modal-lg" id="createAdminModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" >@ViewLocalizer["Create_New"]</h3>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid">
+                    <form asp-action="Create" enctype="multipart/form-data" style="font-size:14px;font-weight:bold">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group mt-2">
+                                    <label asp-for="NewImage" class="control-label"></label>
+                                    <div class="image-input image-input-outline" data-kt-image-input="true" style="position: relative;">
+                                        <div style="display: flex; justify-content: flex-start;">
+                                            <a class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" title="@SharedLocalizer["Upload_Profile_Picture"]" id="addPreview" style="position: absolute; top: 5px; left: 5px;">
+                                                <i class="bi bi-pencil-fill fs-7"></i>
+                                            </a>
+                                            <a class="btn btn-icon btn-circle btn-active-color-primary w-25px h-25px bg-body shadow" id="removePreview" title="@SharedLocalizer["Remove_Profile_Picture"]" style="position: absolute; top: 5px; left: 95px;">
+                                                <i class="bi bi-x fs-2"></i>
+                                            </a>
+                                            <img id="previewImage" class="w-125px h-125px" style="display: none;" alt="Preview" />
+                                            <img id="defaultImage" class="w-125px h-125px" src="~/images/blank-profile-picture.png" alt="Profile" />
+                                            <input type="file" asp-for="NewImage" id="fileInput" accept=".jpg,.jpeg,.png" style="visibility: hidden;" />
+
+                                        </div>
+                                        <span asp-validation-for="NewImage.Length" class="text-danger"></span>
+                                        <span asp-validation-for="NewImage" class="text-danger"></span>
+                                        <span asp-validation-for="NewImage.ContentType" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <label asp-for="FirstName" class="control-label"></label>
+                                    <input asp-for="FirstName" class="form-control bg-white border" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <label asp-for="LastName" class="control-label"></label>
+                                    <input asp-for="LastName" class="form-control bg-white border" />
+                                    <span asp-validation-for="LastName" class="text-danger"></span>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <label asp-for="Gender" class="control-label col col-form-label"><strong>Cinsiyet</strong></label>
+                                    <div class="d-flex align-items-center">
+                                        <div class="form-check me-4">
+                                            <input class="form-check-input" type="radio" value="false" asp-for="Gender" checked>
+                                            <label class="form-check-label" asp-for="Gender">@SharedLocalizer["Woman"]</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" asp-for="Gender" value="true">
+                                            <label class="form-check-label" asp-for="Gender">@SharedLocalizer["Man"]</label>
+                                        </div>
+                                    </div>
+                                    <span asp-validation-for="Gender" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group mt-4">
+                                    <label asp-for="DateOfBirth" class="control-label" style="font-size: 20px; font-weight: bold;"></label>
+                                    <input type="date" id="DateOfBirth" asp-for="DateOfBirth" asp-format="{0:dd/MM/yyyy}" class="form-control" required />
+                                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                                    <div id="error-message" class="text-danger"></div>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <label asp-for="CityId" class="control-label"></label>
+                                    <select class="form-control" asp-items="@ViewBag.Cities" asp-for="CityId">
+                                        <option value=""> Seçiniz </option>
+                                    </select>
+                                    <span asp-validation-for="CityId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group mt-2">
+                                    <label asp-for="Email" class="control-label"></label>
+                                    <input type="email" asp-for="Email" class="form-control bg-white border" />
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                                <div id="otherEmails"></div>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <div class="btn">
+                                        <button class="w3-green w3-button w3-round fw-bold" type="button" onclick="addOtherEmail()">@ViewLocalizer["Add_Other_Email"]</button>
+                                        <div class="fv-plugins-message-container invalid-feedback"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer mt-2">
+                            <button class="w3-blue w3-button w3-round fw-bold mx-2" asp-action="Index">@SharedLocalizer["Back_List"]</button>
+                            <button type="submit" class="w3-green w3-button w3-round fw-bold mx-2">@SharedLocalizer["Save"]</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script>
+        var validationMessage = "@SharedLocalizer["Picture_Format_Error"]";
+    </script>
+    <script type="text/javascript">
+        $(".custom-file-input").on("change", function () {
+            var fileName = $(this).val().split("\\").pop();
+            $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+        });
+    </script>
+	}
+<script>
+
+    function addOtherEmail() {
+        //Create otherMails html
+        let template = `<div class="fv-row mb-7 fv-plugins-icon-container w-85">
+        <div class="d-flex align-items-center">
+        <label class="form-label mt-3" style="font-size: 14px; font-weight: bold;">Mail Adresi</label>
+        </div>
+        <div class="d-flex">
+        <div class="fv-plugins-message-container invalid-feedback d-flex me-2">
+        <input type="email" class="form-control form-control-solid bg-white border" name="otherEmails">
+        <span class="text-danger"></span>
+        </div>
+        <div class="align-self-end d-flex flex-row-reverse justify-content-end">
+        <a class="btn btn-danger btn-sm" onclick="removeMail(this)"><span class="h5 text-light">X</span></a>
+        </div>
+        </div>
+        </div>`;
+
+        //Append created otherMails
+        $("#otherEmails").append(template);
+
+
+
+    }
+</script>
+
+<script>
+    function removeMail(prop) {
+        //Removing otherEmail
+        $(prop).parent().parent().parent().remove();
+    }
+</script>
+
+
+
+<script>
+    var validationMessage = "@SharedLocalizer["Picture_Format_Error"]";
+</script>
+<script type="text/javascript">
+    $(".custom-file-input").on("change", function () {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+    });
+</script>
+<script>
+    // Bu fonksiyon, tarih alanındaki değeri kontrol eder
+    function validateDate() {
+        var inputDate = new Date(document.getElementById('DateOfBirth').value);
+        var currentDate = new Date();
+        // Doğum tarihi gelecekte veya bugün olamaz
+        if (inputDate >= currentDate) {
+            document.getElementById('DateOfBirth').value = ''; // Tarihi temizle
+            document.getElementById('error-message').textContent = 'İleri tarihli giremezsiniz.'; // Hata mesajı göster
+            return false;
+        }
+        // Eğer doğum tarihi geçerliyse, hata mesajını kaldır
+        document.getElementById('error-message').textContent = '';
+        return true;
+    }
+    // Tarih alanının değeri değiştiğinde validateDate() fonksiyonunu çağır
+    document.getElementById('DateOfBirth').addEventListener('change', validateDate);
+    // Form gönderilmeden önce validateDate() fonksiyonunu çağırır
+    document.querySelector('form').addEventListener('submit', function (event) {
+        if (!validateDate()) {
+            event.preventDefault();
+        }
+    });
+</script>
+}

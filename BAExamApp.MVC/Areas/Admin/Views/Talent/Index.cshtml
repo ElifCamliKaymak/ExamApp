@@ -1,0 +1,101 @@
+﻿@model IEnumerable<AdminTalentListVM>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<section class="section dashboard">
+    <div class="row">
+        <div class="card recent-sales overflow-auto">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                    <h5 class="card-title">@ViewLocalizer["Talent_List"]</h5>
+                    <a class="btn btn-primary my-4 col-lg-2" style="width:185px" data-bs-toggle="modal" data-bs-target="#createBranchModal">@SharedLocalizer["Create", SharedLocalizer["Talent"]]</a>
+                </div>
+                <table class="table table-row-bordered datatable">
+                    <thead>
+                        <tr class="text-center">
+                            <th class="text-center fw-bold text-white" data-sortable="false" style="background-color: rgb(134,138,155)">@SharedLocalizer["Talent"]</th>
+                            <th class="text-center fw-bold text-white" data-sortable="false" style="background-color: rgb(134,138,155)">@ViewLocalizer["Operations"]</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var talent in Model)
+                        {
+                            <tr>
+                                <td class="categories text-center">
+                                    <a>
+                                        <span class="post_category">@talent.Name</span>
+                                    </a>
+                                </td>
+                                <td class="employment text-center">
+                                    <div>
+                                        <button class="button deleteAction" style="width:100px;" data-id="@talent.Id">@SharedLocalizer["Delete"]</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+<script src="~/lib/student/js/simple-datatables.js"></script>
+
+<partial name="~/Areas/Admin/Views/Talent/CreatePartialView.cshtml" model="new AdminTalentAddVM()"></partial>
+
+@section Scripts
+    {
+    <script src="~/lib/limonte-sweetalert2/sweetalert2.all.js"></script>
+    <script>
+        $(".deleteAction").click(function () {
+            const id = $(this).attr("data-id");
+            console.log(id);
+            Swal.fire({
+                title: 'Emin misiniz?',
+                text: "Bu işlem geri alınamaz!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Evet, sil!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "GET",
+                        url: "@Url.Action("Delete")",
+                        data: { id: id },
+                        dataType: "json",
+                        success: function (data) {
+                            Swal.fire({
+                                title: 'Başarılı',
+                                text: data.message,
+                                icon: 'success'
+                            }).then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function (xhr, status, error) {
+                            Swal.fire({
+                                title: 'Hata',
+                                text: 'Bu yetenek bir eğitmen tarafından kullanılıyor.',
+                                icon: 'error'
+                            });
+                            console.log("Ajax hatası: " + error);
+                        }
+                    });
+                }
+            });
+        });
+
+    </script>
+
+}
+    <script src="~/dataTable/~/js/main.js"></script>
+    <script>
+        var classroomCount = @Model.Count();
+        window.onload = function () {
+            paginationSetupDropdown(classroomCount);
+        }
+    </script>

@@ -1,0 +1,120 @@
+﻿@model AdminClassroomCreateVM
+
+@{
+    ViewData["Title"] = ViewLocalizer["Create_Classroom"];
+}
+
+<div class="modal fade" id="createClassroomModal" tabindex="-1" aria-labelledby="ProductAdd" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="card-title text-center fw-bolder" style="font-size:30px">@SharedLocalizer["Create_New_Classroom"]</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="form fv-plugins-bootstrap5 fv-plugins-framework" id="create-Classroom" asp-controller="Classroom" asp-action="Create">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="fv-row fv-plugins-icon-container">
+                                <label class="form-label" style="font-size: 20px; font-weight: bold;">
+                                    <label asp-for="Name"></label>
+                                </label>
+                                <input type="text" class="form-control form-control-solid" asp-for="Name" />
+                                <div class="fv-plugins-message-container invalid-feedback"><span asp-validation-for="Name"></span></div>
+                            </div>
+                            <div class="fv-row fv-plugins-icon-container">
+                                <label class="form-label" style="font-size: 20px; font-weight: bold;">
+                                    <label asp-for="OpeningDate"></label>
+                                </label>
+                                <input type="date" class="form-control form-control-solid" id="DateTimeProperty1" asp-for="OpeningDate" />
+                                <div class="fv-plugins-message-container invalid-feedback"><span asp-validation-for="OpeningDate"></span></div>
+                            </div>
+                            <div class="fv-row fv-plugins-icon-container">
+                                <div class="d-flex align-items-center">
+                                    <label asp-for="GroupTypeId" class="form-label" style="font-size: 20px; font-weight: bold;"></label>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-control" asp-items="@ViewBag.GroupTypeList" asp-for="GroupTypeId">
+                                        <option value="">-- Seçiniz --</option>
+                                    </select>
+                                    <span asp-validation-for="GroupTypeId" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="fv-row fv-plugins-icon-container">
+                                <div class="d-flex align-items-center">
+                                    <label asp-for="BranchId" class="form-label" style="font-size: 20px; font-weight: bold;"></label>
+                                </div>
+                                <div class="form-group">
+                                    <select class="form-control" asp-items="@ViewBag.BranchList" asp-for="BranchId">
+                                        <option value="">-- Seçiniz --</option>
+                                    </select>
+                                    <span asp-validation-for="BranchId" class="text-danger"></span>
+                                </div>
+                            </div>
+                            <div class="fv-row fv-plugins-icon-container">
+                                <label class="form-label" style="font-size: 20px; font-weight: bold;">
+                                    <label asp-for="ClosedDate"></label>
+                                </label>
+                                <input type="date" class="form-control form-control-solid" id="DateTimeProperty2" asp-for="ClosedDate" />
+                                <div class="fv-plugins-message-container invalid-feedback"><span asp-validation-for="ClosedDate"></span></div>
+                            </div>
+                            <div class="fv-row fv-plugins-icon-container">
+                                <div class="d-flex align-items-center">
+                                    <label asp-for="ProductIds" class="form-label" style="font-size: 20px; font-weight: bold;"></label>
+                                </div>
+                                <div class="form-group">
+                                    <select class="js-example-placeholder-multiple js-states form-control" style="width: 100%" asp-items="@ViewBag.ProductList" asp-for="ProductIds">
+                                    </select>
+                                    <span asp-validation-for="ProductIds" class="text-danger"></span>
+                                </div>
+                            </div>
+                            
+
+                        </div>
+                    </div>
+
+                    <div class="separator mb-6"></div>
+                    <div class="d-flex justify-content-end">
+                        <button class="w3-green w3-button w3-round fw-bold mx-2" type="submit">@SharedLocalizer["Save"]</button>
+
+                        <br />
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+<script src="~/js/jquery.min.js"></script>
+<script src="~/js/select2.js"></script>
+
+<script>
+    $('.js-example-placeholder-multiple').select2({
+        dropdownParent: $('#createClassroomModal')
+           
+    });
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        $("#DateTimeProperty2").change(function () {
+            var dateTime1 = new Date($("#DateTimeProperty1").val());
+            var dateTime2 = new Date($(this).val());
+
+            if (dateTime1.getTime() === dateTime2.getTime()) {
+                alert("Açılış tarihi ile Kapanış tarihi aynı tarih olamaz...");
+                $(this).val("");
+            }
+            else if (dateTime1.getTime() > dateTime2.getTime()) {
+                alert("Açılış tarihi ile Kapanış tarihinden ileri bir tarih olamaz.");
+                $(this).val("");
+            }
+        });
+    });
+</script>

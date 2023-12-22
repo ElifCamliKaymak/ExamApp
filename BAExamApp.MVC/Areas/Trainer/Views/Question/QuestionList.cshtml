@@ -1,0 +1,170 @@
+﻿@model IEnumerable<TrainerQuestionListVM>
+
+@{
+    var questionState = (State)ViewData["Question_State"];
+    ViewData["Title"] = @SharedLocalizer["Question"];
+}
+
+<div class="table-container">
+    <h2 class="page-title">@SharedLocalizer[questionState.ToString() + "_List", SharedLocalizer["Question"]]</h2>
+    <table class="datatable">
+        <thead>
+            <tr>
+                <th>@Html.DisplayNameFor(model => model.Content)</th>
+                <th>@Html.DisplayNameFor(model => model.SubtopicName)</th>
+                <th>@Html.DisplayNameFor(model => model.QuestionType)</th>
+                <th>@Html.DisplayNameFor(model => model.QuestionDifficultyName)</th>
+                <th>@Html.DisplayNameFor(model => model.TimeGiven)</th>
+                @if (questionState == State.Approved)
+                {
+                    <th>@ViewLocalizer["Approved_Date"]</th>
+                }
+                else if (questionState == State.Rejected)
+                {
+                    <th>@ViewLocalizer["Rejected_Date"]</th>
+                }
+                else if (questionState == State.Reviewed)
+                {
+                    <th>@ViewLocalizer["Review_Request_Date"]</th>
+                }
+                else if (questionState == State.Test)
+                {
+                    <th>@ViewLocalizer["Test_Request_Date"]</th>
+                }
+                else
+                {
+                    <th>@Html.DisplayNameFor(model => model.CreatedDate)</th>
+                }
+                @if (questionState == State.Reviewed)
+                {
+                    <th>@Html.DisplayNameFor(model => model.RequestDescription)</th>
+                }
+                <th>@SharedLocalizer["Transactions"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Any())
+            {
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            <span>@item.Content</span>
+                        </td>
+                        <td>
+                            <span>@item.SubtopicName</span>
+                        </td>
+                        <td>
+                            <span>@SharedLocalizer[@item.QuestionType.ToString()]</span>
+                        </td>
+                        <td>
+                            <span>@item.QuestionDifficultyName</span>
+                        </td>
+                        <td>
+                            <span>@item.TimeGiven.Value</span>
+                        </td>
+                        <td>
+                            @if (questionState != State.Awaited)
+                            {
+                                <span>@item.ModifiedDate.ToString("dd.MM.yyyy")</span>
+                            }
+                            else
+                            {
+                                <span>@item.CreatedDate.ToString("dd.MM.yyyy")</span>
+                            }
+                        </td>
+                        @if (questionState == State.Reviewed)
+                        {
+                            <td>
+                                <span>@item.RequestDescription</span>
+                            </td>
+                        }
+                        <td>
+                            <div class="optionsdropdown">
+                                <button class="btn-details" onclick="toggleDropdown('optionsdropdownMenu-@item.Id')">@SharedLocalizer["Options"] <i class="fa-solid fa-caret-down"></i></button>
+                                <div class="options-dropdown-menu" id="optionsdropdownMenu-@item.Id">
+                                    <a class="btn-details1" onclick="openQuestionModal('@item.Id')">@SharedLocalizer["Details"]</a>
+                                    @if ((questionState == State.Awaited || questionState == State.Reviewed))
+                                    {
+                                        <a asp-controller="Question" asp-action="Update" asp-route-id="@item.Id">@SharedLocalizer["Edit"]</a>
+                                    }
+                                    <a class="revision-button" data-question-id="@item.Id">@SharedLocalizer["Revision_Procedures"]</a>
+                                    <a class="btn-details1" onclick="deleteQuestion('@item.Id')">@SharedLocalizer["Delete"]</a>
+                                </div>
+
+                            </div>
+                        </td>
+                    </tr>
+
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="7">
+                        @SharedLocalizer["No_Data_To_List"]
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal -->
+<div id="questionModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>@SharedLocalizer["Question_Details"]</h2>
+        <hr />
+        <div id="question-details">
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script src="~/lib//limonte-sweetalert2/sweetalert2.all.js"></script>
+    <script src="~/dataTable/~/js/main.js"></script>
+    <script>
+        var classroomCount = @Model.Count();
+        window.onload = function () {
+            paginationSetupDropdown(classroomCount);
+        }
+    </script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.7/dist/sweetalert2.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.5.7/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        $(document).on("click", ".revision-button", function () {
+            var questionId = $(this).data("question-id");
+            redirectToQuestionRevisionList(questionId);
+        });
+
+        function redirectToQuestionRevisionList(questionId) {
+            var url = "@Url.Action("QuestionRevisionList")" + "?id=" + questionId;
+
+            $.get(url)
+                .done(function (data) {
+                    if (data === "Revize işlemi yoktur") {
+                        // Eğer revize işlemi yoksa, SweetAlert2 ile bir bildirim göster
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Bilgi',
+                            text: data
+                        });
+                    } else {
+                        // Revize işlemi varsa, sayfayı yönlendir
+                        window.location.href = url;
+                    }
+                })
+                .fail(function () {
+                    // Hata durumunda bir hata mesajı göster
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hata',
+                        text: 'Bir hata oluştu.'
+                    });
+                });
+        }
+    </script>
+}
